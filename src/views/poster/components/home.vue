@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import html2canvas from 'html2canvas'
 import headerComponent from './header'
 export default {
   components: {
