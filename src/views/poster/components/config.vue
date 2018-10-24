@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-column" style="height: calc(100vh - 84px);">
-    <header-component @preview="previewCanvas" @save="saveCanvas" @download="downloadImage"/>
+    <header-component @preview="previewCanvas" @viewCode="saveCanvas(true)" @save="saveCanvas" @download="downloadImage" @componentChange="componentChange"/>
     <div class="flex flex-1" style="overflow-y: auto;">
       <!--左边item-->
       <div class="flex">
@@ -47,7 +47,7 @@
         <div id="html12Canvas" :style="styleCanvas" class="relative overflow-hidden">
           <!--文字-->
           <div v-for="(text, index) in styleGroups[0].options" :key="index + 'text'" :style="styleText(text.style)" class="ellipsis-x absolute">
-            {{ text.value }}
+            {{ text.style.text }}
           </div>
           <!--图片-->
           <div v-for="(image, index) in styleGroups[1].options" :key="index + 'image'" :style="styleImage(image.style)" style="border-style: solid;" class="absolute overflow-hidden">
@@ -111,7 +111,7 @@
       center
       width="60%">
       <div class="text-center" style="background: white;padding: 15px;">
-        {{ JSON.stringify(canvasStyle, undefined, 4) }}
+        {{ JSON.stringify(rpxData, undefined, 4) }}
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogJson = false">确定</el-button>
@@ -154,6 +154,7 @@ export default {
         height: 600,
         backgroundColor: '#fff'
       },
+      rpxData: {},
       styleGroups: [{
         label: 'text文本',
         name: 'texts',
@@ -400,6 +401,9 @@ export default {
     this.isMounted = true
   },
   methods: {
+    componentChange() {
+      this.$emit('componentChange')
+    },
     previewCanvas() {
       const that = this
       html2canvas(document.getElementById('html12Canvas')).then(function(canvas) {
@@ -411,7 +415,7 @@ export default {
         }, 10)
       })
     },
-    saveCanvas() {
+    saveCanvas(isCode) {
       let posterData = {}
       this.styleGroups.map((item) => {
         const styles = []
@@ -420,10 +424,29 @@ export default {
         })
         this.canvasStyle[item.name] = styles
       })
-      this.dialogJson = true
-      posterData = JSON.parse(JSON.stringify(this.canvasData))
-      posterData.canvasStyle = this.canvasStyle
-      localStorage.setItem('posterData', JSON.stringify(posterData))
+      this.rpxData = JSON.parse(JSON.stringify(this.canvasStyle))
+      for(let item in this.rpxData) {
+        if(typeof(this.rpxData[item]) === 'object') {
+          this.rpxData[item].map(option => {
+            for(let key in option) {
+              let rpxValue = option[key] * 1
+              option[key] = isNaN(rpxValue) ? option[key] : rpxValue
+            }
+          })
+        }
+        else {
+          let rpxValue = this.rpxData[item] * 1
+          this.rpxData[item] = isNaN(rpxValue) ? this.rpxData[item] : rpxValue
+        }
+      }
+      if(isCode) {
+        this.dialogJson = true
+      }
+      else {
+        posterData = JSON.parse(JSON.stringify(this.canvasData))
+        posterData.canvasStyle = this.rpxData
+        // localStorage.setItem('posterData', JSON.stringify(posterData))
+      }
     },
     downloadImage() {
       html2canvas(document.getElementById('html12Canvas')).then(function(canvas) {

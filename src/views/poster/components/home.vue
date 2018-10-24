@@ -122,7 +122,6 @@ export default {
       this.$emit('jumpToConfig', poster)
     },
     deletePoster() {
-      console.log(5345)
       localStorage.removeItem('posterData')
       this.posterData = JSON.parse(localStorage.getItem('posterData'))
     }

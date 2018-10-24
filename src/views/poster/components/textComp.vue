@@ -2,12 +2,12 @@
   <div style="width: 250px;padding: 10px;border-right: 1px solid gainsboro;">
     <h1 class="text-center" style="border-bottom: 1px solid gainsboro;padding-bottom: 15px;">文本</h1>
     <p>编辑·添加文本段落</p>
-    <el-select v-model="selectValue" style="margin-bottom: 15px;" placeholder="请选择" @change="valueChange">
+    <el-select v-model="selectValue" value-key="value" style="margin-bottom: 15px;" placeholder="请选择" @change="selectValueChange">
       <el-option
         v-for="item in textOptions"
         :key="item.value"
         :label="item.label"
-        :value="item.value"/>
+        :value="item"/>
     </el-select>
     <el-input
       :rows="2"
@@ -18,7 +18,7 @@
     <el-button type="primary" style="margin-bottom: 20px;" @click="editText">确定</el-button>
     <el-dialog
       :visible.sync="dialogVisible"
-      :before-close="handleCancel"
+      :before-close="dialogHandleCancel"
       title="添加新文本"
       width="50%">
       <div>
@@ -33,15 +33,15 @@
           <span>文本内容：</span>
           <el-input
             :rows="3"
-            v-model="newText.value"
+            v-model="newText.style.text"
             style="margin-top: 10px;"
             type="textarea"
             placeholder="请输入内容"/>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" @click="handleSure">确 定</el-button>
+        <el-button @click="dialogHandleCancel">取 消</el-button>
+        <el-button type="primary" @click="dialogHandleSure">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -51,7 +51,7 @@
 export default {
   name: 'TextComp',
   props: {
-    textProp: {
+    textsProp: {
       type: null,
       default: []
     }
@@ -92,55 +92,56 @@ export default {
         this.texts = [
           {
             label: '添加新文本',
-            value: '新文本'
+            value: '添加新文本',
+            style: {
+              text: '新文本'
+            }
           }
         ]
         arr.map((item) => {
           this.texts.push(item)
         })
       }
-      this.initSelectValu()
+      // this.initSelectValu()
       return this.texts
     }
   },
   methods: {
     initSelectValu() {
       const flag = this.texts.some((text) => {
-        return text.value === this.selectValue
+        return text.style.text === this.selectValue
       })
       if (!flag) {
-        this.selectValue = ''
-        this.valueChange()
+        this.selectValue = {}
+        this.selectValueChange()
       }
     },
-    valueChange(text) {
-      if (text === '新文本') {
+    selectValueChange(textObj) {
+      if (textObj.value === '添加新文本') {
         this.textarea = ''
         this.dialogVisible = true
       } else {
-        this.textarea = this.selectValue
+        this.textarea = this.selectValue.style.text
       }
     },
     editText() {
-      this.texts.map(item => {
-        if (item.value === this.selectValue) {
-          item.style.text = this.textarea
-          item.value = this.textarea
-        }
-      })
+      this.selectValue.style.text = this.textarea
     },
-    handleCancel() {
+    dialogHandleCancel() {
       this.selectValue = ''
-      this.valueChange(this.selectValue)
+      this.textarea = ''
       this.newText.label = ''
       this.newText.value = ''
+      this.newText.style.text = ''
       this.dialogVisible = false
     },
-    handleSure() {
-      this.newText.style.text = this.newText.value
-      this.texts.push(JSON.parse(JSON.stringify(this.newText)))
-      this.selectValue = this.newText.value
-      this.valueChange(this.selectValue)
+    dialogHandleSure() {
+      let newText = null
+      this.newText.value = this.newText.label
+      newText = JSON.parse(JSON.stringify(this.newText))
+      this.texts.push(newText)
+      this.selectValue = newText
+      this.selectValueChange(this.selectValue)
       this.newText.label = ''
       this.newText.value = ''
       this.newText.style.text = ''

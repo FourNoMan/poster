@@ -1,7 +1,7 @@
 <template>
   <div>
     <home v-if="isHome" @jumpToConfig="jumpToConfig"/>
-    <config v-else :canvas-data="canvasData"/>
+    <config v-else :canvas-data="canvasData" @componentChange="componentChange"/>
   </div>
 </template>
 
@@ -45,7 +45,7 @@ export default {
         options: [
           {
             label: '头部',
-            value: '这里是海报的头部文字',
+            value: '头部',
             style: {
               x: 0,
               y: 0,
@@ -66,7 +66,7 @@ export default {
           },
           {
             label: '底部',
-            value: '底部底部底部底部底部底部底部底部底部底部底部底部',
+            value: '底部',
             style: {
               x: 0,
               y: 0,
@@ -185,7 +185,10 @@ export default {
         canvasData.canvasStyle = this.styleGroups
       }
       this.canvasData = canvasData
-      this.isHome = false
+      this.componentChange()
+    },
+    componentChange() {
+      this.isHome = !this.isHome
     }
   }
 }
