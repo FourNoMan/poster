@@ -2,17 +2,17 @@
   <div class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
-        v-for="tag in Array.from(visitedViews)"
+        v-for="tag in visitedViews"
         ref="tag"
         :class="isActive(tag)?'active':''"
-        :to="tag"
+        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         :key="tag.path"
         tag="span"
         class="tags-view-item"
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
-        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -61,28 +61,22 @@ export default {
   },
   methods: {
     generateTitle, // generateTitle by vue-i18n
-    generateRoute() {
-      if (this.$route.name) {
-        return this.$route
-      }
-      return false
-    },
     isActive(route) {
       return route.path === this.$route.path
     },
     addViewTags() {
-      const route = this.generateRoute()
-      if (!route) {
-        return false
+      const { name } = this.$route
+      if (name) {
+        this.$store.dispatch('addView', this.$route)
       }
-      this.$store.dispatch('addView', route)
+      return false
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
       this.$nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag.$el)
+            this.$refs.scrollPane.moveToTarget(tag)
 
             // when query is different then update
             if (tag.to.fullPath !== this.$route.fullPath) {
