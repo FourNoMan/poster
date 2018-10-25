@@ -445,7 +445,11 @@ export default {
       else {
         posterData = JSON.parse(JSON.stringify(this.canvasData))
         posterData.canvasStyle = this.rpxData
-        // localStorage.setItem('posterData', JSON.stringify(posterData))
+        localStorage.setItem('posterData', JSON.stringify(posterData))
+        this.$message({
+          message: '保存成功！',
+          type: 'success'
+        })
       }
     },
     downloadImage() {
@@ -477,9 +481,6 @@ export default {
         }
       }
     },
-    valueChange() {
-      console.log(this.value)
-    },
     menuSelect(index) {
       this.activeValue = index
     },
@@ -494,7 +495,6 @@ export default {
       this.styleGroups[0].options = texts
     },
     styleChange(styleContent) {
-      console.log(styleContent, '++++++++++222222', this.styleGroups)
       this.styleContent.style = styleContent.style
     },
     contentDelete(content) {
@@ -506,6 +506,10 @@ export default {
           })
           item.options = arr
           this.initStyleContent()
+          this.$message({
+            message: '删除成功！',
+            type: 'success'
+          })
         }
       })
     },

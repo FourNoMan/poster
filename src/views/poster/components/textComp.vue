@@ -125,7 +125,13 @@ export default {
       }
     },
     editText() {
-      this.selectValue.style.text = this.textarea
+      if(this.selectValue.style) {
+        this.selectValue.style.text = this.textarea
+        this.$message({
+          message: '修改成功！',
+          type: 'success'
+        })
+      }
     },
     dialogHandleCancel() {
       this.selectValue = ''
@@ -147,6 +153,10 @@ export default {
       this.newText.style.text = ''
       this.dialogVisible = false
       this.$emit('textsChange', this.texts.slice(1))
+      this.$message({
+        message: '添加成功！',
+        type: 'success'
+      })
     }
   }
 }

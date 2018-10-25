@@ -171,16 +171,30 @@ export default {
       if (!canvasData.canvasStyle) {
         canvasData.canvasStyle = this.styleGroups
       } else { // 暂时使用，修改后删除else代码块
+        //  插件json数据结构转换为本地数据结构
         this.styleGroups.map((item) => {
           const options = []
-          canvasData.canvasStyle[item.name].map((style, index) => {
-            options.push({
-              label: item.name + index,
-              value: item.name + index,
-              style: style
+          if(canvasData.canvasStyle[item.name]) {
+            // text为string还是object，暂时不做处理
+            // if(item.name === 'texts') {
+            //   canvasData.canvasStyle[item.name].map(text => {
+            //     if(typeof(text.text) === 'object') {
+            //       console.log(text, '++444++')
+            //     }
+            //     else {
+            //       console.log(text, '++8888++')
+            //     }
+            //   })
+            // }
+            canvasData.canvasStyle[item.name].map((style, index) => {
+              options.push({
+                label: item.name + index,
+                value: item.name + index,
+                style: style
+              })
             })
-          })
-          item.options = options
+            item.options = options
+          }
         })
         canvasData.canvasStyle = this.styleGroups
       }
