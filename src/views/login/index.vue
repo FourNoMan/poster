@@ -5,7 +5,7 @@
 
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
-        <lang-select class="set-language"/>
+        <!--<lang-select class="set-language"/>-->
       </div>
 
       <el-form-item prop="username">
@@ -37,18 +37,20 @@
         </span>
       </el-form-item>
 
+      <el-checkbox class="flex justify-flex-end item-center margin-bottom-10" v-model="accountInfo.remember">记住密码</el-checkbox>
+
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
-      <div class="tips">
-        <span>{{ $t('login.username') }} : admin</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
+      <!--<div class="tips">-->
+        <!--<span>{{ $t('login.username') }} : admin</span>-->
+        <!--<span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>-->
+      <!--</div>-->
+      <!--<div class="tips">-->
+        <!--<span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>-->
+        <!--<span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>-->
+      <!--</div>-->
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
+      <!--<el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>-->
     </el-form>
 
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
@@ -64,6 +66,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import Cookie from 'js-cookie'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
 
@@ -97,7 +100,12 @@ export default {
       passwordType: 'password',
       loading: false,
       showDialog: false,
-      redirect: undefined
+      redirect: undefined,
+      accountInfo: {
+        cookieName: 'accoutInfo',
+        remember: false,
+        time: 7
+      }
     }
   },
   watch: {
@@ -110,6 +118,7 @@ export default {
 
   },
   created() {
+    this.getAccountCookie()
     // window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
@@ -123,12 +132,30 @@ export default {
         this.passwordType = 'password'
       }
     },
+    getAccountCookie() {
+      let accountStr = Cookie.get(this.accountInfo.cookieName)
+      if(accountStr) {
+        let account = JSON.parse(accountStr)
+        this.loginForm.username = (account && account.username) || this.loginForm.username
+        this.loginForm.password = (account && account.password) || this.loginForm.password
+        this.accountInfo.remember = true
+      }
+      else{
+        this.accountInfo.remember = false
+      }
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
+            if(this.accountInfo.remember) {
+              Cookie.set(this.accountInfo.cookieName, this.loginForm, { expires: this.accountInfo.time })
+            }
+            else {
+              Cookie.remove(this.accountInfo.cookieName)
+            }
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
             this.loading = false
@@ -218,14 +245,20 @@ $light_gray:#eee;
   height: 100%;
   width: 100%;
   background-color: $bg;
+  background-size: cover;
+  background-image: url(../../../static/images/login/bg.png);
+  background-position: bottom;
+  background-repeat:no-repeat;
   .login-form {
     position: absolute;
     left: 0;
     right: 0;
     width: 520px;
     max-width: 100%;
-    padding: 35px 35px 15px 35px;
+    padding: 35px 35px 35px 35px;
     margin: 120px auto;
+    background-color: rgba(0, 0, 0, 0.49);
+    opacity: 1;
   }
   .tips {
     font-size: 14px;

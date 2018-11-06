@@ -8,6 +8,7 @@
 import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
 import editorDashboard from './editor'
+import request from '@/utils/request.js'
 
 export default {
   name: 'Dashboard',

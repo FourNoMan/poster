@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between item-center" style="box-shadow: 0 0 10px darkgrey;">
+  <div class="flex justify-between item-center" style="background: rgba(66, 185, 131, 0.1);padding-left: 50px;">
     <div>
       <h1>海报生成工具</h1>
     </div>

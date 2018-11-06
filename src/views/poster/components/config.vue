@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column" style="height: calc(100vh - 84px);">
+  <div class="flex flex-column full-height overflow-auto">
     <header-component @preview="previewCanvas" @viewCode="saveCanvas(true)" @save="saveCanvas" @download="downloadImage" @componentChange="componentChange"/>
     <div class="flex flex-1" style="overflow-y: auto;">
       <!--左边item-->
@@ -122,6 +122,7 @@
 
 <script>
 import html2canvas from 'html2canvas'
+import download from '@/utils/download'
 import headerComponent from './header'
 import textComp from './textComp'
 import imageComp from './imageComp'
@@ -457,10 +458,7 @@ export default {
         setTimeout(function() {
           var image = new Image()
           image.src = canvas.toDataURL()
-          var a = document.createElement('a')
-          a.href = image.src
-          a.download = '海报.jpg'
-          a.click()
+          download(image.src, '海报.jpg')
         }, 10)
       })
     },

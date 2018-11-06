@@ -1,16 +1,19 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { getAccessToken } from '@/utils/access_token'
+import Qs from 'qs'
+import download from 'downloadjs'
 
 // create an axios instance
-const service = axios.create({
-  baseURL: process.env.BASE_API, // api 的 base_url
+const axiosInstance = axios.create({
+  // baseURL: process.env.BASE_API, // api 的 base_url
   timeout: 5000 // request timeout
 })
 
 // request interceptor
-service.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   config => {
     // Do something before request is sent
     if (store.getters.token) {
@@ -27,7 +30,7 @@ service.interceptors.request.use(
 )
 
 // response interceptor
-service.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   response => response,
   /**
    * 下面的注释为通过在response里，自定义code来标示请求状态
@@ -73,4 +76,68 @@ service.interceptors.response.use(
   }
 )
 
-export default service
+export default axiosInstance
+
+export function api_request(config, options) {
+  const pars = { ...config }
+  if (config.download) {
+    pars.responseType = 'blob'
+    switch (config.method) {
+      case 'get':
+        pars.params = options
+        return axiosInstance(pars).then(response => {
+          console.log('response======================', response)
+          const disposition = response.headers['Content-Disposition'] || response.request.getResponseHeader('Content-Disposition')
+          let fileName = 'file_' + new Date().getTime()
+          if (disposition) {
+            fileName = decodeURI(disposition.match(/filename=(.*)/)[1])
+          }
+          download(response.data, fileName)
+        })
+      case 'post':
+        if (options['download_template']) {
+          delete options['download_template']
+          pars.params = { download_template: true }
+        }
+        pars.data = options
+        return axiosInstance.post(config.url, Qs.stringify(options)).then(response => {
+          console.log('response======================', response)
+          const disposition = response.headers['Content-Disposition'] || response.request.getResponseHeader('Content-Disposition')
+
+          let fileName = 'file_' + new Date().getTime()
+          if (disposition) {
+            fileName = decodeURI(disposition.match(/filename=(.*)/)[1])
+          }
+          download(response.data, fileName)
+        })
+      default:
+        pars.params = options
+        return axiosInstance(pars).then(response => {
+          console.log('response======================', response)
+          const disposition = response.headers['Content-Disposition'] || response.request.getResponseHeader('Content-Disposition')
+          let fileName = 'file_' + new Date().getTime()
+          if (disposition) {
+            fileName = decodeURI(disposition.match(/filename=(.*)/)[1])
+          }
+          download(response.data, fileName)
+        })
+    }
+  }
+  if (config.requestBody) {
+    pars.data = options
+    pars.method = 'post'
+    return axiosInstance(pars)
+  }
+  switch (config.method) {
+    case 'get':
+      pars.params = options
+      return axiosInstance(pars)
+    case 'post':
+      pars.data = options
+      console.log('url======================', config.url)
+      return axiosInstance.post(config.url, Qs.stringify(options))
+    default:
+      pars.params = options
+      return axiosInstance(pars)
+  }
+}

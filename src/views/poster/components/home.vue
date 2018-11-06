@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column" style="height: calc(100vh - 84px);">
+  <div class="flex flex-column full-height">
     <header-component :hide-buttons="true"/>
     <div class="flex flex-1 flex-column" style="background: rgb(242, 242, 242);padding: 30px 50px 50px;overflow-y: auto;">
       <div style="margin-bottom: 30px;">
@@ -263,8 +263,10 @@ export default {
   beforeMount() {
     this.posterData = JSON.parse(localStorage.getItem('posterData'))
     // this.posterData.canvasStyle = this.jdData
-    this.posterData.width = this.posterData.canvasStyle.width
-    this.posterData.height = this.posterData.canvasStyle.height
+    if(this.posterData) {
+      this.posterData.width = this.posterData.canvasStyle.width
+      this.posterData.height = this.posterData.canvasStyle.height
+    }
   },
   methods: {
     createCanvas() {

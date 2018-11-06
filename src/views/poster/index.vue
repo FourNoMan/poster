@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-height">
     <home v-if="isHome" @jumpToConfig="jumpToConfig"/>
     <config v-else :canvas-data="canvasData" @componentChange="componentChange"/>
   </div>

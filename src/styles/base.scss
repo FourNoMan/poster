@@ -1,0 +1,105 @@
+.full-height{
+  height: 100%;
+}
+.full-width{
+  width: 100%;
+}
+
+//  flex相关属性class
+.flex{
+  display: flex;
+}
+.flex-1{
+  flex: 1;
+}
+.shrink-none{
+  flex-shrink: 0;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
+.flex-nowrap{
+  flex-wrap: nowrap;
+}
+.flex-column{
+  flex-direction: column;
+}
+.justify-center{
+  justify-content: center;
+}
+.justify-between{
+  justify-content: space-between;
+}
+.justify-end{
+  justify-content: end;
+}
+.justify-flex-end{
+  justify-content: flex-end;
+}
+.item-center{
+  align-items: center;
+}
+
+//  text相关属相class
+.text-center{
+  text-align: center;
+}
+.text-left{
+  text-align: left;
+}
+.ellipsis-x{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: box;
+  -webkit-box-orient: vertical;
+}
+
+//  margin and padding相关属性class
+.margin-none{
+  margin: none;
+}
+.margin-bottom-10{
+  margin-bottom: 10px;
+}
+.margin-left-10{
+  margin-left: 10px;
+}
+.margin-left-20{
+  margin-left: 20px;
+}
+
+
+//  border相关属性class
+.border-box{
+  box-sizing: border-box;
+}
+
+.font-weight{
+  font-weight: 900;
+}
+.font-size-24{
+  font-size: 24px;
+}
+.font-size-28{
+  font-size: 28px;
+}
+
+
+//  position相关属性class
+.relative{
+  position: relative;
+}
+.absolute{
+  position: absolute;
+}
+
+//  other
+.overflow-auto{
+  overflow: auto;
+}
+.overflow-hidden{
+  overflow: hidden;
+}
+.pointer{
+  cursor: pointer;
+}

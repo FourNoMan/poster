@@ -50,6 +50,14 @@
 <script>
 export default {
   name: 'TextComp',
+  directives: {
+    focus: {
+      inserted(el) {
+        console.log(el)
+        el.focus()
+      }
+    }
+  },
   props: {
     textsProp: {
       type: null,

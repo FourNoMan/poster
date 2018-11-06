@@ -4,6 +4,7 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 @import './btn.scss';
+@import './base.scss';
 
 body {
   height: 100%;
@@ -193,66 +194,3 @@ code {
 }
 
 
-.full-height{
-  height: 100%;
-}
-.full-width{
-  width: 100%;
-}
-.flex{
-  display: flex;
-}
-.flex-1{
-  flex: 1;
-}
-.flex-wrap{
-  flex-wrap: wrap;
-}
-.flex-nowrap{
-  flex-wrap: nowrap;
-}
-.flex-column{
-  flex-direction: column;
-}
-.justify-center{
-  justify-content: center;
-}
-.justify-between{
-  justify-content: space-between;
-}
-.item-center{
-  align-items: center;
-}
-.text-center{
-  text-align: center;
-}
-.text-left{
-  text-align: left;
-}
-.ellipsis-x{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: box;
-  -webkit-box-orient: vertical;
-}
-.margin-none{
-  margin: none;
-}
-.border-box{
-  box-sizing: border-box;
-}
-.relative{
-  position: relative;
-}
-.absolute{
-  position: absolute;
-}
-.overflow-auto{
-  overflow: auto;
-}
-.overflow-hidden{
-  overflow: hidden;
-}
-.pointer{
-  cursor: pointer;
-}
