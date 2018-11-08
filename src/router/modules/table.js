@@ -5,6 +5,7 @@ import Layout from '@/views/layout/Layout'
 const tableRouter = {
   path: '/table',
   component: Layout,
+  hidden: true,
   redirect: '/table/complex-table',
   name: 'Table',
   meta: {
@@ -14,43 +15,43 @@ const tableRouter = {
   children: [
     {
       path: 'component-table',
-      component: () => import('@/views/table/tableComponent'),
+      component: () => import('@/views/others/table/tableComponent'),
       name: 'ComponentTable',
       meta: { title: 'componentTable' }
     },
     {
       path: 'dynamic-table',
-      component: () => import('@/views/table/dynamicTable/index'),
+      component: () => import('@/views/others/table/dynamicTable/index'),
       name: 'DynamicTable',
       meta: { title: 'dynamicTable' }
     },
     {
       path: 'drag-table',
-      component: () => import('@/views/table/dragTable'),
+      component: () => import('@/views/others/table/dragTable'),
       name: 'DragTable',
       meta: { title: 'dragTable' }
     },
     {
       path: 'inline-edit-table',
-      component: () => import('@/views/table/inlineEditTable'),
+      component: () => import('@/views/others/table/inlineEditTable'),
       name: 'InlineEditTable',
       meta: { title: 'inlineEditTable' }
     },
     {
       path: 'tree-table',
-      component: () => import('@/views/table/treeTable/treeTable'),
+      component: () => import('@/views/others/table/treeTable/treeTable'),
       name: 'TreeTableDemo',
       meta: { title: 'treeTable' }
     },
     {
       path: 'custom-tree-table',
-      component: () => import('@/views/table/treeTable/customTreeTable'),
+      component: () => import('@/views/others/table/treeTable/customTreeTable'),
       name: 'CustomTreeTableDemo',
       meta: { title: 'customTreeTable' }
     },
     {
       path: 'complex-table',
-      component: () => import('@/views/table/complexTable'),
+      component: () => import('@/views/others/table/complexTable'),
       name: 'ComplexTable',
       meta: { title: 'complexTable' }
     }

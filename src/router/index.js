@@ -11,6 +11,7 @@ import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
+import vbaoManageRouter from './modules/vbaoManage'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -18,9 +19,9 @@ import nestedRouter from './modules/nested'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+* alwaysShow: true               if set true, will always show the root mechanism, whatever its child routes length
 *                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
+*                                it will becomes nested mode, otherwise not show the root mechanism
 * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
@@ -95,11 +96,12 @@ export const constantRouterMap = [
   {
     path: '/documentation',
     component: Layout,
+    hidden: true,
     redirect: '/documentation/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/documentation/index'),
+        component: () => import('@/views/others/documentation/index'),
         name: 'Documentation',
         meta: { title: 'documentation', icon: 'documentation', noCache: true }
       }
@@ -108,11 +110,12 @@ export const constantRouterMap = [
   {
     path: '/guide',
     component: Layout,
+    hidden: true,
     redirect: '/guide/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/guide/index'),
+        component: () => import('@/views/others/guide/index'),
         name: 'Guide',
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
@@ -127,11 +130,13 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  ...vbaoManageRouter,
   {
     path: '/permission',
     component: Layout,
+    hidden: true,
     redirect: '/permission/index',
-    alwaysShow: true, // will always show the root menu
+    alwaysShow: true, // will always show the root mechanism
     meta: {
       title: 'permission',
       icon: 'lock',
@@ -162,10 +167,11 @@ export const asyncRouterMap = [
   {
     path: '/icon',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/svg-icons/index'),
+        component: () => import('@/views/others/svg-icons/index'),
         name: 'Icons',
         meta: { title: 'icons', icon: 'icon', noCache: true }
       }
@@ -181,6 +187,7 @@ export const asyncRouterMap = [
   {
     path: '/example',
     component: Layout,
+    hidden: true,
     redirect: '/example/list',
     name: 'Example',
     meta: {
@@ -190,20 +197,20 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'create',
-        component: () => import('@/views/example/create'),
+        component: () => import('@/views/others/example/create'),
         name: 'CreateArticle',
         meta: { title: 'createArticle', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
+        component: () => import('@/views/others/example/edit'),
         name: 'EditArticle',
         meta: { title: 'editArticle', noCache: true },
         hidden: true
       },
       {
         path: 'list',
-        component: () => import('@/views/example/list'),
+        component: () => import('@/views/others/example/list'),
         name: 'ArticleList',
         meta: { title: 'articleList', icon: 'list' }
       }
@@ -213,10 +220,11 @@ export const asyncRouterMap = [
   {
     path: '/tab',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/tab/index'),
+        component: () => import('@/views/others/tab/index'),
         name: 'Tab',
         meta: { title: 'tab', icon: 'tab' }
       }
@@ -226,6 +234,7 @@ export const asyncRouterMap = [
   {
     path: '/error',
     component: Layout,
+    hidden: true,
     redirect: 'noredirect',
     name: 'ErrorPages',
     meta: {
@@ -251,6 +260,7 @@ export const asyncRouterMap = [
   {
     path: '/error-log',
     component: Layout,
+    hidden: true,
     redirect: 'noredirect',
     children: [
       {
@@ -265,6 +275,7 @@ export const asyncRouterMap = [
   {
     path: '/excel',
     component: Layout,
+    hidden: true,
     redirect: '/excel/export-excel',
     name: 'Excel',
     meta: {
@@ -274,19 +285,19 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'export-excel',
-        component: () => import('@/views/excel/exportExcel'),
+        component: () => import('@/views/others/excel/exportExcel'),
         name: 'ExportExcel',
         meta: { title: 'exportExcel' }
       },
       {
         path: 'export-selected-excel',
-        component: () => import('@/views/excel/selectExcel'),
+        component: () => import('@/views/others/excel/selectExcel'),
         name: 'SelectExcel',
         meta: { title: 'selectExcel' }
       },
       {
         path: 'upload-excel',
-        component: () => import('@/views/excel/uploadExcel'),
+        component: () => import('@/views/others/excel/uploadExcel'),
         name: 'UploadExcel',
         meta: { title: 'uploadExcel' }
       }
@@ -296,13 +307,14 @@ export const asyncRouterMap = [
   {
     path: '/zip',
     component: Layout,
+    hidden: true,
     redirect: '/zip/download',
     alwaysShow: true,
     meta: { title: 'zip', icon: 'zip' },
     children: [
       {
         path: 'download',
-        component: () => import('@/views/zip/index'),
+        component: () => import('@/views/others/zip/index'),
         name: 'ExportZip',
         meta: { title: 'exportZip' }
       }
@@ -312,11 +324,12 @@ export const asyncRouterMap = [
   {
     path: '/theme',
     component: Layout,
+    hidden: true,
     redirect: 'noredirect',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/theme/index'),
+        component: () => import('@/views/others/theme/index'),
         name: 'Theme',
         meta: { title: 'theme', icon: 'theme' }
       }
@@ -326,6 +339,7 @@ export const asyncRouterMap = [
   {
     path: '/clipboard',
     component: Layout,
+    hidden: true,
     redirect: 'noredirect',
     children: [
       {
@@ -340,10 +354,11 @@ export const asyncRouterMap = [
   {
     path: '/i18n',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/i18n-demo/index'),
+        component: () => import('@/views/others/i18n-demo/index'),
         name: 'I18n',
         meta: { title: 'i18n', icon: 'international' }
       }
@@ -353,6 +368,7 @@ export const asyncRouterMap = [
   {
     path: 'external-link',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'https://github.com/PanJiaChen/vue-element-admin',

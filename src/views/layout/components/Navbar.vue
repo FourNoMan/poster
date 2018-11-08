@@ -4,31 +4,31 @@
 
     <breadcrumb class="breadcrumb-container"/>
 
-    <!--<div class="right-menu">-->
+    <!--<div class="right-mechanism">-->
       <!--<template v-if="device!=='mobile'">-->
-        <!--<error-log class="errLog-container right-menu-item"/>-->
+        <!--<error-log class="errLog-container right-mechanism-item"/>-->
 
         <!--<el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">-->
-          <!--<screenfull class="screenfull right-menu-item"/>-->
+          <!--<screenfull class="screenfull right-mechanism-item"/>-->
         <!--</el-tooltip>-->
 
         <!--&lt;!&ndash;<el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">&ndash;&gt;-->
-          <!--&lt;!&ndash;<size-select class="international right-menu-item"/>&ndash;&gt;-->
+          <!--&lt;!&ndash;<size-select class="international right-mechanism-item"/>&ndash;&gt;-->
         <!--&lt;!&ndash;</el-tooltip>&ndash;&gt;-->
 
-        <!--&lt;!&ndash;<lang-select class="international right-menu-item"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<lang-select class="international right-mechanism-item"/>&ndash;&gt;-->
 
         <!--&lt;!&ndash;<el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">&ndash;&gt;-->
-          <!--&lt;!&ndash;<theme-picker class="theme-switch right-menu-item"/>&ndash;&gt;-->
+          <!--&lt;!&ndash;<theme-picker class="theme-switch right-mechanism-item"/>&ndash;&gt;-->
         <!--&lt;!&ndash;</el-tooltip>&ndash;&gt;-->
       <!--</template>-->
 
-      <!--<el-dropdown class="avatar-container right-menu-item" trigger="click">-->
+      <!--<el-dropdown class="avatar-container right-mechanism-item" trigger="click">-->
         <!--<div class="avatar-wrapper">-->
           <!--<img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">-->
           <!--<i class="el-icon-caret-bottom"/>-->
         <!--</div>-->
-        <!--<el-dropdown-menu slot="dropdown">-->
+        <!--<el-dropdown-mechanism slot="dropdown">-->
           <!--<router-link to="/">-->
             <!--<el-dropdown-item>-->
               <!--{{ $t('navbar.dashboard') }}-->
@@ -42,7 +42,7 @@
           <!--<el-dropdown-item divided>-->
             <!--<span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>-->
           <!--</el-dropdown-item>-->
-        <!--</el-dropdown-menu>-->
+        <!--</el-dropdown-mechanism>-->
       <!--</el-dropdown>-->
     <!--</div>-->
   </div>
