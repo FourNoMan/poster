@@ -7,7 +7,7 @@
     :row-class-name="tableRowClassName"
     :border="dataFetch.border"
     class="full-width"
-    style="margin-top: 1px;">
+    style="margin-top: 1px;margin-left: 1px;">
     <el-table-column
       v-for="(item, key) in dataFetch.tHeader"
       :key="key"

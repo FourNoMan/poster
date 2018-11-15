@@ -5,11 +5,10 @@
 </template>
 
 <script>
-import tableCom from './testForTable'
+import tableCom from '@/components/TableComponent'
 export default {
   name: 'tableComponent',
   components: { tableCom },
-  props: ['tableData'],
   data() {
     return {
       tableDatass: {

@@ -5,6 +5,21 @@
   width: 100%;
 }
 
+.width-120{
+  width: 120px;
+}
+.width-150{
+  width: 150px;
+}
+
+
+.block{
+  display: block;
+}
+.inline-block{
+  display: inline-block;
+}
+
 //  flex相关属性class
 .flex{
   display: flex;
@@ -30,8 +45,11 @@
 .justify-between{
   justify-content: space-between;
 }
+.justify-start{
+  justify-content: flex-start;
+}
 .justify-end{
-  justify-content: end;
+  justify-content: flex-end;
 }
 .justify-flex-end{
   justify-content: flex-end;
@@ -58,8 +76,20 @@
 .margin-none{
   margin: none;
 }
+.margin-top-10{
+  margin-top: 10px;
+}
+.margin-top-20{
+  margin-top: 20px;
+}
+.margin-top-50{
+  margin-top: 50px;
+}
 .margin-bottom-10{
   margin-bottom: 10px;
+}
+.margin-bottom-25{
+  margin-bottom: 25px;
 }
 .margin-left-10{
   margin-left: 10px;
@@ -67,6 +97,24 @@
 .margin-left-20{
   margin-left: 20px;
 }
+.margin-right-50{
+  margin-right: 50px;
+}
+.padding-left-50{
+  padding-left: 50px;
+}
+.padding-right-50{
+  padding-right: 50px;
+}
+.padding-left-100{
+  padding-left: 100px;
+}
+
+.padding-row-30{
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
 
 
 //  border相关属性class

@@ -184,7 +184,7 @@ const vbaoManage = [{
     }, {
       path: 'allowRule',
       component: () => import('@/views/vbaoManage/merchants/allowRule/index'),
-      name: 'merchantInfo',
+      name: 'allowRule',
       meta: { title: '鉴权白名单规则管理', noCache: true }
     }, {
       path: 'serviceCharge',
@@ -211,7 +211,7 @@ const vbaoManage = [{
     {
       path: 'channelInfo',
       component: () => import('@/views/vbaoManage/channels/channelInfo/index'),
-      name: 'channelInfo',
+      name: 'channelInfo1',
       meta: { title: '渠道信息管理', noCache: true }
     }, {
       path: 'channelPay',
@@ -231,7 +231,7 @@ const vbaoManage = [{
     }, {
       path: 'serviceCharge',
       component: () => import('@/views/vbaoManage/channels/serviceCharge/index'),
-      name: 'channelInfo',
+      name: 'serviceCharge',
       meta: { title: '渠道手续费管理', noCache: true }
     }
   ]

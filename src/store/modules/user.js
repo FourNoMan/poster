@@ -42,7 +42,6 @@ const user = {
       state.roles = roles
     }
   },
-
   actions: {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
