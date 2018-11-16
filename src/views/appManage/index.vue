@@ -34,7 +34,7 @@
         </el-option>
       </el-select>
       <div class="flex flex-nowrap">
-        <el-button type="primary">查询</el-button>
+        <el-button type="primary" @click="doQuery">查询</el-button>
         <el-button type="primary" @click="routerLink('appAdd')">添加应用</el-button>
       </div>
     </div>
@@ -217,6 +217,12 @@ export default {
         .catch((error) => {
           console.log(error)
         })
+    },
+    doQuery() {
+      alert("hello")
+      sdk.admin_tenant_list({}).then((res)=>{
+        console.log('res=======', res)
+      })
     },
     handleSizeChange() {
       console.log(534588685)
