@@ -218,8 +218,7 @@ export default {
           console.log(error)
         })
     },
-    doQuery() {
-      alert("hello")
+    doQuery() { 
       sdk.admin_tenant_list({}).then((res)=>{
         console.log('res=======', res)
       })
