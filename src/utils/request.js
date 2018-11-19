@@ -8,7 +8,7 @@ import download from 'downloadjs'
 
 // create an axios instance
 const axiosInstance = axios.create({
-  // baseURL: process.env.BASE_API, // api 的 base_url
+  baseURL: process.env.BASE_API, // api 的 base_url
   timeout: 5000 // request timeout
 })
 
@@ -18,7 +18,8 @@ axiosInstance.interceptors.request.use(
     // Do something before request is sent
     if (store.getters.token) {
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-      config.headers['X-Token'] = getToken()
+      config.headers['Auth-Token'] = getToken()
+      config.headers['Access-Token'] = getAccessToken()
     }
     return config
   },
