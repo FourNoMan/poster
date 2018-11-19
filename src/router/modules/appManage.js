@@ -29,16 +29,9 @@ const appManage = [{
     {
       path: 'appConfig',
       hidden: true,
-      component: () => import('@/views/appManage/components/appConfig'),
+      component: () => import('@/views/appManage/appConfig/index'),
       name: 'appConfig',
-      meta: { title: '应用配置', noCache: true }
-    },
-    {
-      path: 'relationConfig',
-      hidden: true,
-      component: () => import('@/views/appManage/components/relationConfig'),
-      name: 'relationConfig',
-      meta: { title: '关联资源配置', noCache: true }
+      meta: { title: '配置应用', noCache: true }
     }
   ]
 }]

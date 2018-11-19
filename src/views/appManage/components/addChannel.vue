@@ -2,26 +2,15 @@
   <div class="padding-row-30">
     <div class="flex item-center">
       <span class="width-150">
-        第三方应用AppID
+        第三方应用ID
       </span>
-      <el-input
-        clearable
-        placeholder="输入第三方应用AppID"
-        style="width: 200px;"
-        v-model="thirdAppId">
-        <i slot="suffix" class="el-icon-edit el-input__icon"></i>
-      </el-input>
-      <el-button type="text" class="margin-left-20">添加应用</el-button>
+      <span>{{ thirdAppId }}</span>
     </div>
     <div class="flex item-center margin-top-20">
       <span class="width-150">
         应用名称
       </span>
-      <el-input
-        disabled
-        style="width: 200px;"
-        v-model="appName">
-      </el-input>
+      <span>{{ appName }}</span>
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-150">
@@ -128,9 +117,9 @@ export default {
       payPublicKey: '',
       paySecretKey: '',
       channelFirm: '',
-      appName: '',
+      appName: '微小保',
       payChannel: '',
-      thirdAppId: '',
+      thirdAppId: '第三方应用ID',
       appTypeOptions: [
         {
           value: '选项1',

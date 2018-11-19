@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-column padding-row-30">
-    <div class="flex justify-between item-center">
+  <div>
+    <div class="flex item-center">
       <el-input
         clearable
         placeholder="输入应用名称"
@@ -8,8 +8,7 @@
         v-model="appName">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
       </el-input>
-      <!--<el-button type="warning" @click="addApp">click</el-button>-->
-      <el-select v-model="appType" clearable placeholder="请选择应用类别">
+      <el-select v-model="platform" class="margin-left-20" clearable placeholder="请选择应用平台">
         <el-option
           v-for="item in appTypeOptions"
           :key="item.value"
@@ -17,33 +16,15 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-select v-model="platform" clearable placeholder="请选择应用平台">
-        <el-option
-          v-for="item in appTypeOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-select v-model="appSataus" clearable placeholder="请选择应用状态">
-        <el-option
-          v-for="item in appTypeOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <div class="flex flex-nowrap">
+      <div class="flex flex-nowrap margin-left-20">
         <el-button type="primary">查询</el-button>
-        <el-button type="primary" @click="routerLink('appAdd')">旧版应用管理</el-button>
-        <el-button type="primary" @click="dialogVisible = true">添加应用</el-button>
-        <el-button type="primary" @click="routerLink('appConfig')">配置应用</el-button>
+        <el-button type="primary" @click="dialogVisible=true">详情</el-button>
       </div>
     </div>
     <div class="margin-top-20">
       <table-comp :tableData="tableData"></table-comp>
     </div>
-    <div class="flex justify-center margin-top-10">
+    <div class="flex margin-top-20">
       <el-pagination
         :current-page="currentPage"
         :page-sizes="[10, 20, 50, 100]"
@@ -55,15 +36,14 @@
       </el-pagination>
     </div>
     <el-dialog
-      title="添加应用"
+      title="通知详情"
       :visible.sync="dialogVisible"
       width="70%"
-      center
-      style="margin-top: -10vh">
-      <app-edit></app-edit>
+      center>
+      <dialog-content></dialog-content>
       <span slot="footer" class="dialog-footer text-center">
         <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-        <el-button type="primary" @click="dialogVisible = false">确认</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -71,9 +51,13 @@
 
 <script>
 import tableComp from '@/components/TableComponent'
-import appEdit from './components/appEdit'
-import sdk from '@/api/sdk'
+import dialogContent from './dialogDetail'
 export default {
+  components: {
+    tableComp,
+    dialogContent
+  },
+  name: 'noticeList',
   data() {
     return {
       dialogVisible: false,
@@ -97,7 +81,6 @@ export default {
       ],
       appName: '',
       platform: '',
-      appSataus: '',
       appType: '',
       currentPage: 1,
       tableData: {
@@ -220,29 +203,12 @@ export default {
     }
   },
   methods: {
-    addApp() {
-      let data = {}
-      sdk.list(data)
-        .then((res) => {
-          console.log(res, '++111111++')
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
     handleSizeChange() {
       console.log(534588685)
     },
     handleCurrentChange() {
       console.log(121215263)
-    },
-    routerLink(router) {
-      this.$router.push('/appManage/' + router)
     }
-  },
-  components: {
-    tableComp,
-    appEdit
   }
 }
 </script>

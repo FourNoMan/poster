@@ -4,6 +4,7 @@ const Api = {}
 
 
 Api['test'] = { 'url': '/express/test', 'methods': 'get' }
+Api['list'] = {'url': 'http://172.16.3.141:8080/admin/tenant/list', 'methods': 'post'}
 Api['addApp'] = { 'url': 'http://172.16.3.128:8080/admin/tenant_app/create', 'methods': 'post' }
 
 
