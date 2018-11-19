@@ -1,9 +1,9 @@
 <template>
   <div :class="classObj" class="app-wrapper flex flex-column">
-    <div class="full-width shrink-none flex item-center justify-between" style="height: 60px;background: #fff;line-height: 60px;">
+    <div class="full-width shrink-none flex item-center justify-between" style="height: 100px;background: #3b91b6;padding: 0 30px;">
       <div class="flex item-center">
-       <!-- <img style="height: 50px;" :src="'static/images/log.png'" alt="">-->
-        <span style="color: #2B2B2B;font-weight: 600;" class="font-size-18 margin-left-10">VBAO(新重构)交易系统</span>
+        <img style="height: 50px;" :src="'static/images/log.png'" alt="">
+        <span style="color: #FFFFFF;" class="font-size-28 margin-left-10">VBAO(新重构)交易系统</span>
       </div>
       <div class="right-menu">
         <template>
@@ -32,7 +32,7 @@
         </el-dropdown>
       </div>
     </div>
-    <div class="flex-1 overflow-hidden flex" style="background: #f3f3f3;">
+    <div class="flex-1 overflow-hidden flex">
       <!--<div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>-->
       <sidebar class="sidebar-container"/>
       <div class="main-container flex-1 flex flex-column">
@@ -114,10 +114,6 @@ export default {
       top: 0;
     }
   }
-  .navbar{
-    background: #fff;
-    margin-top: 10px;
-  }
   .drawer-bg {
     background: #000;
     opacity: 0.3;
@@ -138,7 +134,7 @@ export default {
     }
     .right-menu-item {
       display: inline-block;
-      margin: 20px 8px;
+      margin: 0 8px;
     }
     .screenfull {
       height: 20px;

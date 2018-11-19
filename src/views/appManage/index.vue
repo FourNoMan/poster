@@ -34,8 +34,10 @@
         </el-option>
       </el-select>
       <div class="flex flex-nowrap">
-        <el-button type="primary" @click="doQuery">查询</el-button>
-        <el-button type="primary" @click="routerLink('appAdd')">添加应用</el-button>
+        <el-button type="primary">查询</el-button>
+        <el-button type="primary" @click="routerLink('appAdd')">旧版应用管理</el-button>
+        <el-button type="primary" @click="dialogVisible = true">添加应用</el-button>
+        <el-button type="primary" @click="routerLink('appConfig')">配置应用</el-button>
       </div>
     </div>
     <div class="margin-top-20">
@@ -52,15 +54,29 @@
         @current-change="handleCurrentChange">
       </el-pagination>
     </div>
+    <el-dialog
+      title="添加应用"
+      :visible.sync="dialogVisible"
+      width="70%"
+      center
+      style="margin-top: -10vh">
+      <app-edit></app-edit>
+      <span slot="footer" class="dialog-footer text-center">
+        <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
+        <el-button type="primary" @click="dialogVisible = false">确认</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import tableComp from '@/components/TableComponent'
+import appEdit from './components/appEdit'
 import sdk from '@/api/sdk'
 export default {
   data() {
     return {
+      dialogVisible: false,
       appTypeOptions: [
         {
           value: '选项1',
@@ -205,23 +221,14 @@ export default {
   },
   methods: {
     addApp() {
-      let data = {
-        name: 'vbao',
-        appid: '12345',
-        description: '一个神奇的测试'
-      }
-      sdk.addApp(data)
+      let data = {}
+      sdk.list(data)
         .then((res) => {
           console.log(res, '++111111++')
         })
         .catch((error) => {
           console.log(error)
         })
-    },
-    doQuery() { 
-      sdk.admin_tenant_list({}).then((res)=>{
-        console.log('res=======', res)
-      })
     },
     handleSizeChange() {
       console.log(534588685)
@@ -234,7 +241,8 @@ export default {
     }
   },
   components: {
-    tableComp
+    tableComp,
+    appEdit
   }
 }
 </script>
