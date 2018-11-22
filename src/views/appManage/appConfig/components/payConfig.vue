@@ -19,7 +19,7 @@
 
 <script>
 import tableComp from '@/components/TableComponent'
-import addChannel from '../../components/addChannel'
+import addChannel from './dialogAddChannel'
 export default {
   name: 'payConfig',
   components: {

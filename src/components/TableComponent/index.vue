@@ -1,22 +1,39 @@
 <template>
   <el-table
     v-if="dataFetch"
-    :data="dataFetch.tableDatas"
+    :data="dataFetch.tableItems || dataFetch.tableDatas"
     :stripe="dataFetch.stripe"
     :max-height="dataFetch.maxHeight"
     :row-class-name="tableRowClassName"
     :border="dataFetch.border"
     class="full-width"
     style="margin-top: 1px;margin-left: 1px;">
-    <el-table-column
-      v-for="(item, key) in dataFetch.tHeader"
-      :key="key"
-      :prop="key"
-      :sortable="item.sortable"
-      :fixed="item.fixed"
-      :label="item.label"
-      :width="item.width">
-    </el-table-column>
+    <template v-for="(item, key) in dataFetch.tHeader">
+      <el-table-column
+        v-if="item.buttons"
+        :label="item.label"
+        :prop="key"
+        :fixed="item.fixed"
+        :sortable="item.sortable"
+        :width="item.width"
+        :key="key">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            :type="button.type"
+            @click="button.fn(scope.row)" v-for="button in item.buttons">{{ button.label }}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-else
+        :prop="key"
+        :key="key"
+        :sortable="item.sortable"
+        :fixed="item.fixed"
+        :label="item.label"
+        :width="item.width">
+      </el-table-column>
+    </template>
   </el-table>
 </template>
 
