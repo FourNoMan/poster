@@ -14,24 +14,32 @@ const appManage = [{
   children: [
     {
       path: '',
-      hidden: true,
-      component: () => import('@/views/appManage/index'),
-      name: 'appManage',
-      meta: { title: '', noCache: true }
-    },
-    {
-      path: 'appAdd',
-      hidden: true,
-      component: () => import('@/views/appManage/components/index'),
-      name: 'appAdd',
-      meta: { title: '添加应用', noCache: true }
-    },
-    {
-      path: 'appConfig',
-      hidden: true,
       component: () => import('@/views/appManage/appConfig/index'),
-      name: 'appConfig',
-      meta: { title: '配置应用', noCache: true }
+      redirect: 'appList',
+      name: 'appManage',
+      meta: { title: '应用', noCache: true },
+      children: [
+        {
+          path: 'appList',
+          hidden: true,
+          component: () => import('@/views/appManage/appConfig/appList'),
+          name: 'appList',
+          meta: { title: '配置列表', noCache: true }
+        },
+        {
+          path: 'appConfig',
+          hidden: true,
+          component: () => import('@/views/appManage/appConfig/appConfig'),
+          name: 'appConfig',
+          meta: { title: '配置应用', noCache: true }
+        }
+      ]
+    },
+    {
+      path: 'appType',
+      component: () => import('@/views/appManage/appType/index'),
+      name: 'appType',
+      meta: { title: '应用分类', noCache: true }
     }
   ]
 }]

@@ -18,7 +18,7 @@
 
 <script>
 import tableComp from '@/components/TableComponent'
-import dialogContent from '../../components/thirdApp'
+import dialogContent from './dialogThirdApp'
 export default {
   name: 'thirdApp',
   components: {

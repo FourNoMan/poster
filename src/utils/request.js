@@ -127,6 +127,7 @@ export function api_request(config, options) {
   if (config.requestBody) {
     pars.data = options
     pars.method = 'post'
+    console.log('request body=====',pars)
     return axiosInstance(pars)
   }
   switch (config.method) {

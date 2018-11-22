@@ -1,45 +1,34 @@
 <template>
-  <div>
+  <div class="padding-row-30">
     <div class="flex item-center">
       <span class="width-120">
-        应用名称
+        分类名称
       </span>
       <el-input
         clearable
-        placeholder="输入应用名称"
+        placeholder="输入分类名称"
         style="width: 200px;"
-        v-model="appName">
+        @input="valueChange"
+        v-model="cateData.name">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
       </el-input>
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-120">
-        应用分类
+        应用上级分类
       </span>
-      <el-select v-model="appType" clearable placeholder="请选择应用类别">
+      <el-select v-model="cateData.parentId" @change="valueChange" clearable placeholder="请选择上级分类">
         <el-option
-          v-for="item in appTypeOptions"
+          v-for="item in parentOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
     </div>
-    <div class="margin-top-20 flex item-center">
-      <span class="width-120">
-        应用负责人
-      </span>
-      <el-input
-        clearable
-        v-model="responsibility"
-        placeholder="输入应用负责人"
-        style="width: 200px;">
-        <i slot="suffix" class="el-icon-edit el-input__icon"></i>
-      </el-input>
-    </div>
     <div class="margin-top-20 flex">
       <span class="width-120">
-        应用图标
+        上传分类图片
       </span>
       <el-upload
         class="avatar-uploader inline-block"
@@ -47,59 +36,24 @@
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <img v-if="cateData.iconUrl" :src="cateData.iconUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
-    </div>
-    <div class="margin-top-20 flex">
-      <span class="width-120">
-        应用描述
-      </span>
-      <el-input
-        clearable
-        placeholder="输入应用名称"
-        type="textarea"
-        v-model="appDescription"
-        style="max-width: 700px;">
-        <i slot="suffix" class="el-icon-edit el-input__icon"></i>
-      </el-input>
     </div>
   </div>
 </template>
 
 <script>
+import sdk from '@/api/sdk'
 export default {
-  name: 'appAdd',
+  props: ['value', 'parentIds'],
   data() {
-    return {
-      appType: '',
-      appName: '',
-      appDescription: '',
-      imageUrl: '',
-      responsibility: '',
-      appTypeOptions: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ]
-    }
+    return {}
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+      this.cateData.iconUrl = URL.createObjectURL(file.raw)
+      this.valueChange()
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
@@ -112,6 +66,17 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    valueChange() {
+      this.$emit('input', this.cateData)
+    }
+  },
+  computed: {
+    cateData() {
+      return this.value
+    },
+    parentOptions() {
+      return this.parentIds || []
     }
   }
 }
