@@ -77,9 +77,9 @@
   </div>
 </template>
 <script>
-  import tableComp from '@/components/TableComponent'
-  export default {
-    data() {
+import tableComp from '@/components/TableComponent'
+export default {
+ data() {
       return {
         dialogVisible: false,
         currentPage:1,
