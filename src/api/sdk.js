@@ -10,6 +10,8 @@ Api['admin_tenant_app_cate_list_parent']={"url":"/admin/tenant_app_cate/list_par
 Api['admin_tenant_app_cate_list_all']={"url":"/admin/tenant_app_cate/list_all","method":"get"}
 Api['admin_tenant_app_cate_get_one']={"url":"/admin/tenant_app_cate/get_one","method":"post",requestBody:true}
 Api['admin_tenant_app_create']={"url":"/admin/tenant_app/create","method":"post",requestBody:true}
+
+Api['admin_tenant_app_cate_remove_children_all']={"url":"/admin/tenant_app_cate/remove_children_all","method":"get"}
 Api['admin_tenant_app_remove_by_id']={"url":"/admin/tenant_app/remove_by_id","method":"get"}
 Api['admin_tenant_app_update_by_id']={"url":"/admin/tenant_app/update_by_id","method":"get"}
 Api['admin_tenant_app_createSecret']={"url":"/admin/tenant_app/createSecret","method":"get"}

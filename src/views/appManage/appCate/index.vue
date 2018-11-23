@@ -42,9 +42,9 @@
     </div>
     <div class="flex margin-top-10">
       <el-pagination
-        :current-page="queryList.page"
+        :current-page="queryParam.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="queryList.pageSize"
+        :page-size="queryParam.pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
@@ -60,7 +60,7 @@
       <app-edit v-model="cateData" :parentIds="parentOptions"></app-edit>
       <span slot="footer" class="dialog-footer text-center">
         <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-        <el-button type="primary" @click="cateUpdate">确认</el-button>
+        <el-button type="primary" @click="dialogSubmit">确认</el-button>
       </span>
     </el-dialog>
   </div>
@@ -74,7 +74,7 @@ export default {
   data() {
     let that = this
     return {
-      queryList: {
+      queryParam: {
         page: 1,
         pageSize: 10
       },
@@ -85,6 +85,7 @@ export default {
         name: '',
         iconUrl: ''
       },
+      isCateUpdate: false,
       dialogVisible: false,
       appTypeOptions: [
         {
@@ -151,6 +152,12 @@ export default {
             fixed: '',
             sortable: false
           },
+          status: {
+            label: '状态',
+            width: null,
+            fixed: '',
+            sortable: false
+          },
           operateName: {
             label: '创建人',
             width: null,
@@ -172,9 +179,7 @@ export default {
             }, {
               label: '删除',
               type: 'primary',
-              fn: function(param) {
-                console.log(param, '++7777++')
-              }
+              fn: that.cateRemove
             }],
             width: 180,
             fixed: '',
@@ -193,13 +198,21 @@ export default {
       this.getCateParent(data ? data.id : null)
       this.dialogVisible = true
     },
+    dialogSubmit() {
+      if (this.isCateUpdate) {
+        this.cateUpdate()
+      }
+      else {
+        this.cateCreate()
+      }
+    },
     cateUpdate() {
-      console.log(this.cateData, '++8888++')
       let that = this
       sdk.admin_tenant_app_cate_update_by_id(this.cateData)
         .then(res => {
           that.dialogVisible = false
           that.getCateList()
+          that.isCateUpdate = false
           that.$message({
             message: '修改成功！',
             type: 'success'
@@ -209,13 +222,46 @@ export default {
           console.log(error)
         })
     },
+    cateCreate() {
+      let that = this
+      sdk.admin_tenant_app_cate_create(this.cateData)
+        .then(res => {
+          that.dialogVisible = false
+          that.getCateList()
+          that.isCateUpdate = false
+          that.$message({
+            message: '创建成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    cateRemove(row) {
+      let that = this
+      if((row !== undefined) && (row !== null) && row.id) {
+        sdk.admin_tenant_app_cate_remove_children_all({ id: row.id })
+          .then(res => {
+            that.getCateList()
+            that.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+      console.log(row, '++44444++')
+    },
     getCateParent(id) {
       if((id !== undefined) && (id !== null)) {
         let that = this
+        this.isCateUpdate = true
         sdk.admin_tenant_app_cate_list_parent({ id: id })
           .then(res => {
             that.parentOptions = []
-            that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
             res.data.data.dataList.forEach(item => {
               that.parentOptions.push({
                 label: item.name,
@@ -228,37 +274,10 @@ export default {
           })
       }
     },
-    cateCreate() {
-      let that = this
-      sdk.admin_tenant_app_cate_create(this.cateData)
-        .then(res => {
-          that.dialogVisible = false
-          that.getCateList()
-          that.$message({
-            message: '创建成功！',
-            type: 'success'
-          })
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getOne(data){
-      sdk.admin_tenant_app_cate_get_one({ id: data.parentId })
-        .then(res => {
-          console.log(res, '++9999999++')
-          that.$message({
-            message: '创建成功！',
-            type: 'success'
-          })
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
     getCateList() {
       let obj = {}
       let that = this
+      this.isCateUpdate = false
       sdk.admin_tenant_app_cate_list(obj)
         .then(res => {
           console.log(res, '++66666++')
@@ -273,7 +292,6 @@ export default {
           })
         })
         .catch(error => {
-          console.log('+777777777++')
           console.log(error)
         })
     },
