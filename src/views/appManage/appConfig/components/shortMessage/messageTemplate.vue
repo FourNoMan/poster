@@ -16,8 +16,8 @@
         </el-option>
       </el-select>
       <div class="flex flex-nowrap margin-left-20">
-        <el-button type="primary">查询</el-button>
-        <el-button type="primary" @click="dialogVisible=true">添加短信模板</el-button>
+        <el-button type="primary" @click="getSmsTemplateList">查询</el-button>
+        <el-button type="primary" @click="smsTemplateEdite">添加短信模板</el-button>
       </div>
     </div>
     <div class="margin-top-20">
@@ -25,10 +25,10 @@
     </div>
     <div class="flex margin-top-20">
       <el-pagination
-        :current-page="currentPage"
+        :current-page="queryParam.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
-        :total="400"
+        :page-size="queryParam.pageSize"
+        :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange">
@@ -39,10 +39,21 @@
       :visible.sync="dialogVisible"
       width="70%"
       center>
-      <dialog-content></dialog-content>
+      <dialog-content v-model="smsTemplateItemData"></dialog-content>
       <span slot="footer" class="dialog-footer text-center">
         <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+        <el-button type="primary" @click="dialogSubmit">确定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="删除操作"
+      :visible.sync="removeDialogVisible"
+      width="30%"
+      center>
+      <span>删除后不可以恢复，确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="removeDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="smsTemplateRemove(currentRow)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -51,6 +62,7 @@
 <script>
 import tableComp from '@/components/TableComponent'
 import dialogContent from './dialogTemplate'
+import sdk from '@/api/sdk'
 export default {
   name: 'messageTemplate',
   components: {
@@ -58,7 +70,23 @@ export default {
     dialogContent
   },
   data() {
+    let that = this
     return {
+      queryParam: {
+        page: 1,
+        pageSize: 10
+      },
+      smsTemplateItemData: {
+        bizName: '',
+        businessTitle: '',
+        bucketName: '',
+        isGroup: false,
+        groupType: ''
+      },
+      total: 1,
+      currentRow: '',
+      isSmsTemplateUpdate: false,
+      removeDialogVisible: false,
       dialogVisible: false,
       appTypeOptions: [
         {
@@ -95,67 +123,70 @@ export default {
             sortable: false
           },
           name: {
-            label: '应用名称',
+            label: '模板名称',
             width: null,
             fixed: '',
             sortable: false
           },
           createdTime: {
-            label: '应用创建时间',
+            label: '创建时间',
             width: null,
             fixed: '',
             sortable: false
           },
           appType: {
-            label: '应用分类',
+            label: '短信通道',
             width: null,
             fixed: '',
             sortable: false
           },
           platform: {
-            label: '应用平台',
+            label: '通道模板ID',
             width: null,
             fixed: '',
             sortable: false
           },
           vbaoId: {
-            label: '微保AppID',
+            label: '模板内容',
             width: null,
             fixed: '',
             sortable: false
           },
           thirdNumber: {
-            label: '第三方应用数',
+            label: '说明',
             width: null,
             fixed: '',
             sortable: false
           },
           relationConfig: {
-            label: '关联配置',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          responsibility: {
-            label: '负责人',
+            label: '创建人',
             width: null,
             fixed: '',
             sortable: false
           },
           status: {
-            label: '应用状态',
+            label: '状态',
             width: null,
             fixed: '',
             sortable: false
           },
           operation: {
             label: '操作',
-            width: null,
+            width: 160,
+            buttons: [{
+              label: '编辑',
+              type: 'primary',
+              fn: that.smsTemplateEdite
+            }, {
+              label: '删除',
+              type: 'primary',
+              fn: that.isRemove
+            }],
             fixed: '',
             sortable: false
           }
         },
-        tableDatas: [{
+        tableItems: [{
           rowStatus: 'warning',
           id: 3,
           createdTime: '2016-05-02',
@@ -202,22 +233,104 @@ export default {
     }
   },
   methods: {
-    addApp() {
-      let data = {}
-      sdk.list(data)
-        .then((res) => {
-          console.log(res, '++111111++')
+    getSmsTemplateList() {
+      let obj = {}
+      let that = this
+      sdk.admin_sms_account_config_list(obj)
+        .then(res => {
+          that.total = res.data.data.total
+          that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
+          console.log(res, '++getSmsTemplateList++')
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
+    smsTemplateEdite(data) {
+      for(let item in this.smsTemplateItemData) {
+        this.smsTemplateItemData[item] = (data[item] === undefined) ? null : data[item]
+      }
+      if(data && data.id) {
+        this.isSmsTemplateUpdate = true
+        this.smsTemplateItemData.id = data.id
+      }
+      else {
+        delete this.smsTemplateItemData.id
+      }
+      this.dialogVisible = true
+    },
+    smsTemplateCreate() {
+      let that = this
+      console.log(this.smsTemplateItemData, '++smsTemplateItemData++')
+      sdk.admin_tenant_third_app_create(this.smsTemplateItemData)
+        .then(res => {
+          console.log(res, '++smsTemplateCreate++')
+          that.dialogVisible = false
+          that.getSmsTemplateList()
+          that.isSmsTemplateUpdate = false
+          that.$message({
+            message: '创建成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    smsTemplateUpdate() {
+      let that = this
+      sdk.admin_tenant_third_app_update_by_id(this.smsTemplateItemData)
+        .then(res => {
+          that.dialogVisible = false
+          that.getSmsTemplateList()
+          that.smsTemplateUpdate = false
+          that.$message({
+            message: '修改成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    isRemove(row) {
+      this.currentRow = row
+      this.removeDialogVisible = true
+    },
+    smsTemplateRemove(row) {
+      let that = this
+      if((row !== undefined) && (row !== null) && row.id) {
+        sdk.admin_tenant_third_app_remove_by_id({ id: row.id })
+          .then(res => {
+            that.removeDialogVisible = false
+            that.getSmsTemplateList()
+            that.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    dialogSubmit() {
+      if (this.smsTemplateUpdate()) {
+        this.smsTemplateUpdate()
+      }
+      else {
+        this.smsTemplateCreate()
+      }
+    },
     handleSizeChange() {
-      console.log(534588685)
+      console.log('handleSizeChange')
     },
     handleCurrentChange() {
-      console.log(121215263)
+      console.log('handleCurrentChange')
     }
+  },
+  mounted() {
+    this.getSmsTemplateList()
   }
 }
 </script>

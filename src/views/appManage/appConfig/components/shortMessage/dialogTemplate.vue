@@ -16,10 +16,10 @@
     </div>
     <div class="flex margin-top-20">
       <el-pagination
-        :current-page="currentPage"
+        :current-page="queryParam.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
-        :total="400"
+        :page-size="queryParam.pageSize"
+        :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange">
@@ -31,12 +31,17 @@
 <script>
 import tableComp from '@/components/TableComponent'
 export default {
+  props: ['value'],
   components: {
     tableComp
   },
   data() {
     return {
-      currentPage: 1,
+      queryParam: {
+        page: 1,
+        pageSize: 10
+      },
+      total: 1,
       temlateSearch: '',
       tableData: {
         stripe: true,
@@ -106,12 +111,20 @@ export default {
           },
           operation: {
             label: '操作',
-            width: null,
+            width: 80,
+            buttons: [{
+              label: '选用',
+              type: 'primary',
+              fn: function() {
+                //  这里写“选用”函数处理逻辑
+                console.log('已经被选用了')
+              }
+            }],
             fixed: '',
             sortable: false
           }
         },
-        tableDatas: [{
+        tableItems: [{
           rowStatus: 'warning',
           id: 3,
           createdTime: '2016-05-02',
@@ -159,10 +172,15 @@ export default {
   },
   methods: {
     handleSizeChange() {
-      console.log(534588685)
+      console.log('handleSizeChange')
     },
     handleCurrentChange() {
-      console.log(121215263)
+      console.log('handleCurrentChange')
+    }
+  },
+  computed: {
+    smsTemplateData() {
+      return this.value
     }
   }
 }

@@ -8,7 +8,8 @@
         clearable
         placeholder="输入应用名称"
         style="width: 200px;"
-        v-model="appName">
+        @input="valueChange"
+        v-model="appData.name">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
       </el-input>
     </div>
@@ -16,9 +17,9 @@
       <span class="width-120">
         应用分类
       </span>
-      <el-select v-model="appType" clearable placeholder="请选择应用类别">
+      <el-select v-model="appData.cateId" @change="valueChange" clearable placeholder="请选择应用类别">
         <el-option
-          v-for="item in appTypeOptions"
+          v-for="item in parentOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
@@ -31,7 +32,8 @@
       </span>
       <el-input
         clearable
-        v-model="responsibility"
+        @input="valueChange"
+        v-model="appData.ownerName"
         placeholder="输入应用负责人"
         style="width: 200px;">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
@@ -47,7 +49,7 @@
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <img v-if="appData.iconUrl" :src="appData.iconUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
     </div>
@@ -59,7 +61,8 @@
         clearable
         placeholder="输入应用名称"
         type="textarea"
-        v-model="appDescription"
+        @input="valueChange"
+        v-model="appData.description"
         style="max-width: 700px;">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
       </el-input>
@@ -69,36 +72,16 @@
 
 <script>
 export default {
+  props: ['value', 'parentIds'],
   data() {
-    return {
-      appType: '',
-      appName: '',
-      appDescription: '',
-      imageUrl: '',
-      responsibility: '',
-      appTypeOptions: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ]
-    }
+    return {}
   },
   methods: {
+    valueChange() {
+      this.$emit('input', this.appData)
+    },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+      this.appData.description = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
@@ -111,6 +94,17 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    }
+  },
+  mounted() {
+    console.log(this.appData, '++3333333333++')
+  },
+  computed: {
+    appData() {
+      return this.value
+    },
+    parentOptions() {
+      return this.parentIds || []
     }
   }
 }

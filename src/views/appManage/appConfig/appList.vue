@@ -33,8 +33,8 @@
         </el-option>
       </el-select>
       <div class="flex flex-nowrap">
-        <el-button type="primary">查询</el-button>
-        <el-button type="primary" @click="dialogVisible = true">添加应用</el-button>
+        <el-button type="primary" @click="getAppList">查询</el-button>
+        <el-button type="primary" @click="appEdite">添加应用</el-button>
       </div>
     </div>
     <div class="margin-top-20">
@@ -42,25 +42,36 @@
     </div>
     <div class="flex margin-top-10">
       <el-pagination
-        :current-page="currentPage"
+        :current-page="queryParam.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
-        :total="400"
+        :page-size="queryParam.page"
+        :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange">
       </el-pagination>
     </div>
     <el-dialog
-      title="添加应用"
+      title="应用配置"
       :visible.sync="dialogVisible"
       width="70%"
       center
       style="margin-top: -10vh">
-      <dialog-content></dialog-content>
+      <dialog-content v-model="appItemData" :parentIds="parentOptions"></dialog-content>
       <span slot="footer" class="dialog-footer text-center">
         <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-        <el-button type="primary" @click="dialogVisible = false">确认</el-button>
+        <el-button type="primary" @click="dialogSubmit">确认</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="删除操作"
+      :visible.sync="removeDialogVisible"
+      width="30%"
+      center>
+      <span>删除后不可以恢复，确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="removeDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="appRemove(currentRow)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -74,24 +85,24 @@ export default {
   data() {
     let that = this
     return {
-      tableTest: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区'
-      }],
+      currentRow: '',
+      queryParam: {
+        page: 1,
+        pageSize: 10
+      },
+      total: 0,
+      isAppUpdate: false,
+      parentOptions: [],
+      appItemData: {
+        id: '',
+        name: '',
+        cateId: '',
+        ownerName: '',
+        iconUrl: '',
+        description: ''
+      },
       dialogVisible: false,
+      removeDialogVisible: false,
       appTypeOptions: [
         {
           value: '选项1',
@@ -139,7 +150,7 @@ export default {
             fixed: '',
             sortable: false
           },
-          appType: {
+          cateName: {
             label: '应用分类',
             width: null,
             fixed: '',
@@ -157,7 +168,7 @@ export default {
             fixed: '',
             sortable: false
           },
-          thirdNumber: {
+          thirdAppCount: {
             label: '第三方应用数',
             width: null,
             fixed: '',
@@ -169,7 +180,7 @@ export default {
             fixed: '',
             sortable: false
           },
-          responsibility: {
+          ownerName: {
             label: '负责人',
             width: null,
             fixed: '',
@@ -186,9 +197,11 @@ export default {
             buttons: [{
               label: '编辑',
               type: 'primary',
-              fn: function(param) {
-                console.log(param, '++7777++')
-              }
+              fn: that.appEdite
+            }, {
+              label: '删除',
+              type: 'primary',
+              fn: that.isRemove
             }, {
               label: '应用配置',
               type: 'primary',
@@ -197,57 +210,139 @@ export default {
                 that.routerLink('appConfig')
               }
             }],
-            width: 200,
+            width: 270,
             fixed: '',
             sortable: false
           }
         },
-        tableItems: [{
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        tableItems: []
       }
     }
   },
   methods: {
-    handleApp(param) {
-      console.log(param, '++4444++')
-    },
-    addApp() {
+    getAppList() {
       let obj = {}
+      let that = this
+      this.isAppUpdate = false
       sdk.admin_tenant_app_list(obj)
-      // sdk.qiang_test()
-        .then((res) => {
-          console.log(res, '++111111++')
+        .then(res => {
+          that.total = res.data.data.total
+          that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
+          console.log(res, '++getAppList++')
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
+    },
+    appEdite(data) {
+      for(let item in this.appItemData) {
+        this.appItemData[item] = (data[item] === undefined) ? null : data[item]
+      }
+      this.getParentCate((data.id !== undefined) ? data.id : null)
+      this.dialogVisible = true
+    },
+    appCreate() {
+      let that = this
+      console.log('this.appItemData:', this.appItemData)
+      sdk.admin_tenant_app_create(this.appItemData)
+        .then(res => {
+          that.dialogVisible = false
+          that.getAppList()
+          that.isAppUpdate = false
+          that.$message({
+            message: '创建成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    appUpdate() {
+      let that = this
+      sdk.admin_tenant_app_update_by_id(this.appItemData)
+        .then(res => {
+          that.dialogVisible = false
+          that.getAppList()
+          that.isAppUpdate = false
+          that.$message({
+            message: '修改成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    isRemove(row) {
+      this.currentRow = row
+      this.removeDialogVisible = true
+    },
+    appRemove(row) {
+      let that = this
+      if((row !== undefined) && (row !== null) && row.id) {
+        sdk.admin_tenant_app_remove_by_id({ id: row.id })
+          .then(res => {
+            that.removeDialogVisible = false
+            that.getAppList()
+            that.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    getParentCate(id) {
+      if((id !== undefined) && (id !== null)) {
+        let that = this
+        this.isAppUpdate = true
+        sdk.admin_tenant_app_cate_list_parent({ id: id })
+          .then(res => {
+            that.parentOptions = []
+            res.data.data.dataList.forEach(item => {
+              that.parentOptions.push({
+                label: item.name,
+                value: item.id
+              })
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+      else{
+        this.getCateList()
+      }
+    },
+    getCateList() {
+      let obj = {}
+      let that = this
+      this.isAppUpdate = false
+      sdk.admin_tenant_app_cate_list(obj)
+        .then(res => {
+          console.log(res, '++getCateList++')
+          that.parentOptions = []
+          res.data.data.dataList.forEach(item => {
+            that.parentOptions.push({
+              label: item.name,
+              value: item.id
+            })
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    dialogSubmit() {
+      if (this.isAppUpdate) {
+        this.appUpdate()
+      }
+      else {
+        this.appCreate()
+      }
     },
     handleSizeChange() {
       console.log(534588685)
@@ -262,6 +357,10 @@ export default {
   components: {
     tableComp,
     dialogContent
+  },
+  created() {
+    this.getAppList()
+    this.getCateList()
   }
 }
 </script>

@@ -25,8 +25,8 @@
         </el-option>
       </el-select>
       <div class="flex flex-nowrap">
-        <el-button type="primary">查询</el-button>
-        <el-button type="primary" @click="dialogVisible=true">添加存储配置</el-button>
+        <el-button type="primary" @click="getStorageConfigList">查询</el-button>
+        <el-button type="primary" @click="storageConfigEdite">添加存储配置</el-button>
       </div>
     </div>
     <div class="margin-top-20">
@@ -34,10 +34,10 @@
     </div>
     <div class="flex margin-top-20">
       <el-pagination
-        :current-page="currentPage"
+        :current-page="queryParam.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
-        :total="400"
+        :page-size="queryParam.pageSize"
+        :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange">
@@ -48,10 +48,21 @@
       :visible.sync="dialogVisible"
       width="70%"
       center>
-      <dialog-content></dialog-content>
+      <dialog-content v-model="storageConfigItemData"></dialog-content>
       <span slot="footer" class="dialog-footer text-center">
         <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+        <el-button type="primary" @click="dialogSubmit">确定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="删除操作"
+      :visible.sync="removeDialogVisible"
+      width="30%"
+      center>
+      <span>删除后不可以恢复，确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="removeDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="storageConfigRemove(currentRow)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -60,11 +71,28 @@
 <script>
 import tableComp from '@/components/TableComponent'
 import dialogContent from './dialogConfig'
+import sdk from '@/api/sdk'
 export default {
   name: 'configManage',
   data() {
+    let that = this
     return {
       dialogVisible: false,
+      queryParam: {
+        page: 1,
+        pageSize: 10
+      },
+      storageConfigItemData: {
+        bizName: '',
+        businessTitle: '',
+        bucketName: '',
+        isGroup: false,
+        groupType: ''
+      },
+      total: 1,
+      currentRow: '',
+      isStorageConfigUpdate: false,
+      removeDialogVisible: false,
       appTypeOptions: [
         {
           value: '选项1',
@@ -101,67 +129,76 @@ export default {
             sortable: false
           },
           name: {
-            label: '应用名称',
+            label: '存储名称',
             width: null,
             fixed: '',
             sortable: false
           },
           createdTime: {
-            label: '应用创建时间',
+            label: '创建时间',
             width: null,
             fixed: '',
             sortable: false
           },
           appType: {
-            label: '应用分类',
+            label: '存储提供方',
             width: null,
             fixed: '',
             sortable: false
           },
           platform: {
-            label: '应用平台',
+            label: '存储应用ID',
             width: null,
             fixed: '',
             sortable: false
           },
           vbaoId: {
-            label: '微保AppID',
+            label: 'accessKeyId',
             width: null,
             fixed: '',
             sortable: false
           },
           thirdNumber: {
-            label: '第三方应用数',
+            label: 'AccessKeySecret',
             width: null,
             fixed: '',
             sortable: false
           },
           relationConfig: {
-            label: '关联配置',
+            label: '域名',
             width: null,
             fixed: '',
             sortable: false
           },
           responsibility: {
-            label: '负责人',
+            label: '创建人',
             width: null,
             fixed: '',
             sortable: false
           },
           status: {
-            label: '应用状态',
+            label: '状态',
             width: null,
             fixed: '',
             sortable: false
           },
           operation: {
             label: '操作',
-            width: null,
+            width: 160,
+            buttons: [{
+              label: '编辑',
+              type: 'primary',
+              fn: that.storageConfigEdite
+            }, {
+              label: '删除',
+              type: 'primary',
+              fn: that.isRemove
+            }],
             fixed: '',
             sortable: false
           }
         },
-        tableDatas: [{
+        tableItems: [{
           rowStatus: 'warning',
           id: 3,
           createdTime: '2016-05-02',
@@ -208,26 +245,108 @@ export default {
     }
   },
   methods: {
-    addApp() {
-      let data = {}
-      sdk.list(data)
-        .then((res) => {
-          console.log(res, '++111111++')
+    getStorageConfigList() {
+      let obj = {}
+      let that = this
+      sdk.admin_app_pay_channel_config_list(obj)
+        .then(res => {
+          that.total = res.data.data.total
+          that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
+          console.log(res, '++getStorageConfigList++')
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
+    storageConfigEdite(data) {
+      for(let item in this.storageConfigItemData) {
+        this.storageConfigItemData[item] = (data[item] === undefined) ? null : data[item]
+      }
+      if(data && data.id) {
+        this.isStorageConfigUpdate = true
+        this.storageConfigItemData.id = data.id
+      }
+      else {
+        delete this.storageConfigItemData.id
+      }
+      this.dialogVisible = true
+    },
+    storageConfigCreate() {
+      let that = this
+      console.log(this.storageConfigItemData, '++storageConfigItemData++')
+      sdk.admin_tenant_third_app_create(this.storageConfigItemData)
+        .then(res => {
+          console.log(res, '++storageConfigCreate++')
+          that.dialogVisible = false
+          that.getStorageConfigList()
+          that.isStorageConfigUpdate = false
+          that.$message({
+            message: '创建成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    storageConfigUpdate() {
+      let that = this
+      sdk.admin_tenant_third_app_update_by_id(this.storageConfigItemData)
+        .then(res => {
+          that.dialogVisible = false
+          that.getStorageConfigList()
+          that.storageConfigUpdate = false
+          that.$message({
+            message: '修改成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    isRemove(row) {
+      this.currentRow = row
+      this.removeDialogVisible = true
+    },
+    storageConfigRemove(row) {
+      let that = this
+      if((row !== undefined) && (row !== null) && row.id) {
+        sdk.admin_tenant_third_app_remove_by_id({ id: row.id })
+          .then(res => {
+            that.removeDialogVisible = false
+            that.getStorageConfigList()
+            that.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    dialogSubmit() {
+      if (this.storageConfigUpdate()) {
+        this.storageConfigUpdate()
+      }
+      else {
+        this.storageConfigCreate()
+      }
+    },
     handleSizeChange() {
-      console.log(534588685)
+      console.log('handleSizeChange')
     },
     handleCurrentChange() {
-      console.log(121215263)
+      console.log('handleCurrentChange')
     }
   },
   components: {
     tableComp,
     dialogContent
+  },
+  mounted() {
+    this.getStorageConfigList()
   }
 }
 </script>

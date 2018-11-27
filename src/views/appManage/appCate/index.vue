@@ -63,6 +63,17 @@
         <el-button type="primary" @click="dialogSubmit">确认</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="删除操作"
+      :visible.sync="removeDialogVisible"
+      width="30%"
+      center>
+      <span>删除后不可以恢复，确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="removeDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="cateRemove(currentRow)">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -74,6 +85,7 @@ export default {
   data() {
     let that = this
     return {
+      currentRow: '',
       queryParam: {
         page: 1,
         pageSize: 10
@@ -87,6 +99,7 @@ export default {
       },
       isCateUpdate: false,
       dialogVisible: false,
+      removeDialogVisible: false,
       appTypeOptions: [
         {
           value: '选项1',
@@ -179,7 +192,7 @@ export default {
             }, {
               label: '删除',
               type: 'primary',
-              fn: that.cateRemove
+              fn: that.isRemove
             }],
             width: 180,
             fixed: '',
@@ -193,9 +206,9 @@ export default {
   methods: {
     cateEdite(data) {
       for(let item in this.cateData) {
-        this.cateData[item] = (data === undefined) ? null : data[item]
+        this.cateData[item] = (data[item] === undefined) ? null : data[item]
       }
-      this.getCateParent(data ? data.id : null)
+      this.getCateParent(data.id ? data.id : null)
       this.dialogVisible = true
     },
     dialogSubmit() {
@@ -238,11 +251,16 @@ export default {
           console.log(error)
         })
     },
+    isRemove(row) {
+      this.currentRow = row
+      this.removeDialogVisible = true
+    },
     cateRemove(row) {
       let that = this
       if((row !== undefined) && (row !== null) && row.id) {
         sdk.admin_tenant_app_cate_remove_children_all({ id: row.id })
           .then(res => {
+            that.removeDialogVisible = false
             that.getCateList()
             that.$message({
               message: '删除成功！',
@@ -253,7 +271,6 @@ export default {
             console.log(error)
           })
       }
-      console.log(row, '++44444++')
     },
     getCateParent(id) {
       if((id !== undefined) && (id !== null)) {
@@ -272,6 +289,9 @@ export default {
           .catch(error => {
             console.log(error)
           })
+      }
+      else {
+        this.getCateList()
       }
     },
     getCateList() {

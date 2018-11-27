@@ -5,7 +5,7 @@
         模板ID
       </span>
       <div class="relative flex-1">
-        <span class="block">{{ templateId }}</span>
+        <span class="block">{{ noticeData.templateId }}</span>
         <span class="absolute bottom--25" style="color: #999999;">开发者调用模板消息接口时需提供模板ID</span>
       </div>
     </div>
@@ -14,7 +14,7 @@
         详细内容
       </span>
       <div class="relative flex-1">
-        <span class="block">{{ noticeCode }}</span>
+        <span class="block">{{ noticeData.noticeCode }}</span>
         <span class="absolute bottom--25" style="color: #999999;">在发送时，需要将内容中的参数({first.value}内为参数)赋值替换为需要的信息</span>
       </div>
     </div>
@@ -22,7 +22,7 @@
       <span class="width-150">
         内容示例
       </span>
-      <span class="block">{{ noticeText }}</span>
+      <span class="block">{{ noticeData.noticeText }}</span>
     </div>
   </div>
 </template>
@@ -37,20 +37,13 @@ export default {
     }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
+    valueChange() {
+      this.$emit('input', this.noticeData)
+    }
+  },
+  computed: {
+    noticeData() {
+      return this.value
     }
   }
 }

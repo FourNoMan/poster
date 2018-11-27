@@ -4,7 +4,7 @@
       <span class="width-150">
         服务提供商
       </span>
-      <el-select v-model="serviceProvider" clearable placeholder="请选择服务提供商">
+      <el-select v-model="shortMessageData.channel" @change="valueChange" clearable placeholder="请选择服务提供商">
         <el-option
           v-for="item in appTypeOptions"
           :key="item.value"
@@ -20,8 +20,9 @@
       <el-input
         clearable
         placeholder="输入短信AppID"
+        @input="valueChanges"
         style="width: 500px;"
-        v-model="messageId">
+        v-model="shortMessageData.appid">
       </el-input>
     </div>
     <div class="margin-top-20 flex">
@@ -31,20 +32,22 @@
       <el-input
         clearable
         placeholder="输入accessKeyId"
+        @input="valueChange"
         type="textarea"
-        v-model="accessKeyId"
+        v-model="shortMessageData.accessKeyId"
         style="max-width: 500px;">
       </el-input>
     </div>
     <div class="margin-top-20 flex">
       <span class="width-150">
-        accessKeySecre
+        accessKeySecret
       </span>
       <el-input
         clearable
-        placeholder="输入accessKeySecre"
+        placeholder="输入accessKeySecret"
+        @input="valueChange"
         type="textarea"
-        v-model="accessKeySecre"
+        v-model="shortMessageData.accessKeySecret"
         style="max-width: 500px;">
       </el-input>
     </div>
@@ -55,8 +58,9 @@
       <el-input
         clearable
         placeholder="公网访问域名"
+        @input="valueChange"
         style="width: 500px;"
-        v-model="domainName">
+        v-model="shortMessageData.origin">
       </el-input>
     </div>
   </div>
@@ -64,6 +68,7 @@
 
 <script>
 export default {
+  props: ['value'],
   data() {
     return {
       accessKeyId: '',
@@ -92,20 +97,13 @@ export default {
     }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
+    valueChange() {
+      this.$emit('input', this.shortMessageData)
+    }
+  },
+  computed: {
+    shortMessageData() {
+      return this.value
     }
   }
 }

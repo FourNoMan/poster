@@ -4,19 +4,19 @@
       <span class="width-150">
         模板ID
       </span>
-      <span>{{ templateId }}</span>
+      <span>{{ noticeData.templateId }}</span>
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-150">
         通知模板
       </span>
-      <span>{{ templateName }}</span>
+      <span>{{ noticeData.templateName }}</span>
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-150">
         第三方平台
       </span>
-      <span>{{ platformName }}</span>
+      <span>{{ noticeData.platformName }}</span>
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-150">
@@ -31,6 +31,7 @@
 
 <script>
 export default {
+  props: ['value'],
   data() {
     return {
       templateId: '1212121212',
@@ -58,20 +59,13 @@ export default {
     }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
+    valueChange() {
+      this.$emit('input', this.noticeData)
+    }
+  },
+  computed: {
+    noticeData() {
+      return this.value
     }
   }
 }

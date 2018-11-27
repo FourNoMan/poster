@@ -4,7 +4,7 @@
       <span class="width-150">
         第三方应用平台
       </span>
-      <el-radio-group v-model="thirdPlatform">
+      <el-radio-group v-model="thirdAppData.thirdPlatform" @change="valueChange">
         <el-radio :label="radio.value" v-for="radio in appTypeOptions">{{ radio.label }}</el-radio>
       </el-radio-group>
     </div>
@@ -15,11 +15,25 @@
       <div>
         <el-input
           clearable
-          v-model="appId"
+          @input="valueChange"
+          v-model="thirdAppData.appid"
           placeholder="输入应用ID"
           style="width: 500px;">
         </el-input>
-
+      </div>
+    </div>
+    <div class="margin-top-20 flex item-center">
+      <span class="width-150">
+        负责人
+      </span>
+      <div class="relative">
+        <el-input
+          clearable
+          @input="valueChange"
+          v-model="thirdAppData.ownerName"
+          placeholder="输入负责人姓名"
+          style="width: 500px;">
+        </el-input>
       </div>
     </div>
     <div class="margin-top-20 flex item-center">
@@ -29,7 +43,8 @@
       <div class="relative">
         <el-input
           clearable
-          v-model="secretKey"
+          @input="valueChange"
+          v-model="thirdAppData.secret"
           placeholder="输入应用密钥"
           style="width: 500px;">
         </el-input>
@@ -43,8 +58,9 @@
       <div class="relative">
         <el-input
           clearable
-          v-model="noticeUrl"
-          placeholder="输入应用密钥"
+          @input="valueChange"
+          v-model="thirdAppData.notifyUrl"
+          placeholder="输入消息通知URL"
           style="width: 500px;">
         </el-input>
         <span class="absolute" style="color: #999999;bottom: -25px;">用于消息接收</span>
@@ -55,6 +71,7 @@
 
 <script>
 export default {
+  props: ['value'],
   data() {
     return {
       thirdPlatform: '',
@@ -63,39 +80,32 @@ export default {
       noticeUrl: '',
       appTypeOptions: [
         {
-          value: '选项1',
-          label: '黄金糕'
+          value: 'WX_MINIPROGRAM',
+          label: '微信小程序'
         }, {
-          value: '选项2',
-          label: '双皮奶'
+          value: 'WX_MP',
+          label: '微信公众号'
         }, {
-          value: '选项3',
-          label: '蚵仔煎'
+          value: 'H5',
+          label: 'H5'
         }, {
-          value: '选项4',
-          label: '龙须面'
+          value: 'APP',
+          label: 'APP'
         }, {
-          value: '选项5',
-          label: '北京烤鸭'
+          value: 'DD_MINIPROGRAM',
+          label: '滴滴小程序'
         }
       ]
     }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
+    valueChange() {
+      this.$emit('input', this.thirdAppData)
+    }
+  },
+  computed: {
+    thirdAppData() {
+      return this.value
     }
   }
 }

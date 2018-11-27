@@ -37,7 +37,7 @@
             placeholder="自定义输入32位字符串或系统生成密钥"
             style="width: 500px;">
           </el-input>
-          <el-button class="margin-left-20">生成密钥</el-button>
+          <el-button class="margin-left-20" @click="createSecret">生成密钥</el-button>
         </div>
       </div>
     </div>
@@ -64,6 +64,7 @@ import payConfig from './components/payConfig'
 import storageConfig from './components/storageConfig/index'
 import shortMessage from './components/shortMessage/index'
 import noticeCenter from './components/noticeCenter/index'
+import sdk from '@/api/sdk'
 export default {
   name: 'index',
   components: {
@@ -75,11 +76,22 @@ export default {
   },
   data() {
     return {
-      appId: 123232,
-      appName: '微小保',
       expires: '',
       secretKey: '',
       configItem: '关联第三方应用'
+    }
+  },
+  methods: {
+    createSecret() {
+      let that = this
+      sdk.admin_tenant_app_createSecret()
+        .then(res => {
+          that.secretKey = res.data.data
+          console.log(res, '++createSecret++')
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   },
   computed: {

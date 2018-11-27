@@ -9,8 +9,8 @@
         <!--<i slot="suffix" class="el-icon-edit el-input__icon"></i>-->
       </el-input>
       <div class="flex flex-nowrap margin-left-20">
-        <el-button type="primary">查询</el-button>
-        <el-button type="primary" @click="dialogVisible=true">添加业务配置</el-button>
+        <el-button type="primary" @click="getStorageBusinessList">查询</el-button>
+        <el-button type="primary" @click="storageBusinessEdite">添加业务配置</el-button>
       </div>
     </div>
     <div class="margin-top-20">
@@ -18,10 +18,10 @@
     </div>
     <div class="flex margin-top-20">
       <el-pagination
-        :current-page="currentPage"
+        :current-page="queryParam.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
-        :total="400"
+        :page-size="queryParam.pageSize"
+        :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange">
@@ -32,10 +32,21 @@
       :visible.sync="dialogVisible"
       width="70%"
       center>
-      <dialog-content></dialog-content>
+      <dialog-content v-model="storageBusinessItemData"></dialog-content>
       <span slot="footer" class="dialog-footer text-center">
         <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+        <el-button type="primary" @click="dialogSubmit">确定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="删除操作"
+      :visible.sync="removeDialogVisible"
+      width="30%"
+      center>
+      <span>删除后不可以恢复，确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="removeDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="storageBusinessRemove(currentRow)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -47,7 +58,23 @@ import dialogContent from './dialogBusiness'
 export default {
   name: 'businessManage',
   data() {
+    let that = this
     return {
+      queryParam: {
+        page: 1,
+        pageSize: 10
+      },
+      storageBusinessItemData: {
+        bizName: '',
+        businessTitle: '',
+        bucketName: '',
+        isGroup: false,
+        groupType: ''
+      },
+      total: 1,
+      currentRow: '',
+      isStorageBusinessUpdate: false,
+      removeDialogVisible: false,
       dialogVisible: false,
       businessName: '',
       platform: '',
@@ -67,62 +94,59 @@ export default {
             sortable: false
           },
           name: {
-            label: '应用名称',
+            label: '业务名称',
             width: null,
             fixed: '',
             sortable: false
           },
           createdTime: {
-            label: '应用创建时间',
+            label: '创建时间',
+            width: null,
+            fixed: '',
+            sortable: false
+          },
+          bizName: {
+            label: '业务名称(bizName)',
             width: null,
             fixed: '',
             sortable: false
           },
           appType: {
-            label: '应用分类',
+            label: '存储提供方',
             width: null,
             fixed: '',
             sortable: false
           },
           platform: {
-            label: '应用平台',
+            label: '日期分组',
             width: null,
             fixed: '',
             sortable: false
           },
           vbaoId: {
-            label: '微保AppID',
+            label: '日期分组格式',
             width: null,
             fixed: '',
             sortable: false
           },
           thirdNumber: {
-            label: '第三方应用数',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          relationConfig: {
-            label: '关联配置',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          responsibility: {
-            label: '负责人',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          status: {
-            label: '应用状态',
+            label: '目录名称',
             width: null,
             fixed: '',
             sortable: false
           },
           operation: {
             label: '操作',
-            width: null,
+            width: 160,
+            buttons: [{
+              label: '编辑',
+              type: 'primary',
+              fn: that.storageBusinessEdite
+            }, {
+              label: '删除',
+              type: 'primary',
+              fn: that.isRemove
+            }],
             fixed: '',
             sortable: false
           }
@@ -174,15 +198,94 @@ export default {
     }
   },
   methods: {
-    addApp() {
-      let data = {}
-      sdk.list(data)
-        .then((res) => {
-          console.log(res, '++111111++')
+    getStorageBusinessList() {
+      let obj = {}
+      let that = this
+      sdk.admin_app_pay_channel_config_list(obj)
+        .then(res => {
+          that.total = res.data.data.total
+          that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
+          console.log(res, '++getStorageBusinessList++')
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
+    },
+    storageBusinessEdite(data) {
+      for(let item in this.storageBusinessItemData) {
+        this.storageBusinessItemData[item] = (data[item] === undefined) ? null : data[item]
+      }
+      if(data && data.id) {
+        this.isStorageBusinessUpdate = true
+        this.storageBusinessItemData.id = data.id
+      }
+      else {
+        delete this.storageBusinessItemData.id
+      }
+      this.dialogVisible = true
+    },
+    storageBusinessCreate() {
+      let that = this
+      console.log(this.storageBusinessItemData, '++storageBusinessItemData++')
+      sdk.admin_tenant_third_app_create(this.storageBusinessItemData)
+        .then(res => {
+          console.log(res, '++storageBusinessCreate++')
+          that.dialogVisible = false
+          that.getStorageBusinessList()
+          that.isStorageBusinessUpdate = false
+          that.$message({
+            message: '创建成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    storageBusinessUpdate() {
+      let that = this
+      sdk.admin_tenant_third_app_update_by_id(this.storageBusinessItemData)
+        .then(res => {
+          that.dialogVisible = false
+          that.getStorageBusinessList()
+          that.storageBusinessUpdate = false
+          that.$message({
+            message: '修改成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    isRemove(row) {
+      this.currentRow = row
+      this.removeDialogVisible = true
+    },
+    storageBusinessRemove(row) {
+      let that = this
+      if((row !== undefined) && (row !== null) && row.id) {
+        sdk.admin_tenant_third_app_remove_by_id({ id: row.id })
+          .then(res => {
+            that.removeDialogVisible = false
+            that.getStorageBusinessList()
+            that.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    dialogSubmit() {
+      if (this.storageBusinessUpdate()) {
+        this.storageBusinessUpdate()
+      }
+      else {
+        this.storageBusinessCreate()
+      }
     },
     handleSizeChange() {
       console.log(534588685)
@@ -194,6 +297,9 @@ export default {
   components: {
     tableComp,
     dialogContent
+  },
+  mounted() {
+    this.getStorageBusinessList()
   }
 }
 </script>

@@ -7,8 +7,9 @@
       <el-input
         clearable
         placeholder="业务标题"
+        @input="valueChange"
         style="width: 500px;"
-        v-model="businessTitle">
+        v-model="storageConfigData.businessTitle">
       </el-input>
     </div>
     <div class="margin-top-20 flex item-center">
@@ -18,8 +19,9 @@
       <el-input
         clearable
         placeholder="默认的bizName"
+        @input="valueChange"
         style="width: 500px;"
-        v-model="bizName">
+        v-model="storageConfigData.bizName">
       </el-input>
     </div>
     <div class="margin-top-20 flex item-center">
@@ -29,24 +31,25 @@
       <el-input
         clearable
         placeholder="默认的bucketName"
+        @input="valueChange"
         style="width: 500px;"
-        v-model="bucketName">
+        v-model="storageConfigData.bucketName">
       </el-input>
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-150">
         日期分组
       </span>
-      <el-radio-group v-model="isGroup">
+      <el-radio-group v-model="storageConfigData.isGroup" @change="valueChange">
         <el-radio :label="true">是</el-radio>
         <el-radio :label="false">否</el-radio>
       </el-radio-group>
     </div>
-    <div class="margin-top-20 flex item-center" v-if="isGroup">
+    <div class="margin-top-20 flex item-center" v-if="storageConfigData.isGroup">
       <span class="width-150">
         分组格式
       </span>
-      <el-select v-model="groupType" clearable placeholder="请选择应用类别">
+      <el-select v-model="storageConfigData.groupType" @change="valueChange" clearable placeholder="请选择应用类别">
         <el-option
           v-for="item in appTypeOptions"
           :key="item.value"
@@ -60,16 +63,9 @@
 
 <script>
 export default {
+  props: ['value'],
   data() {
     return {
-      bizName: '',
-      businessTitle: '',
-      bucketName: '',
-      isGroup: true,
-      groupType: '',
-      appDescription: '',
-      imageUrl: '',
-      responsibility: '',
       appTypeOptions: [
         {
           value: '选项1',
@@ -91,20 +87,13 @@ export default {
     }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
+    valueChange() {
+      this.$emit('input', this.storageConfigData)
+    }
+  },
+  computed: {
+    storageConfigData() {
+      return this.value
     }
   }
 }

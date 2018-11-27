@@ -4,19 +4,19 @@
       <span class="width-150">
         第三方应用ID
       </span>
-      <span>{{ thirdAppId }}</span>
+      <span>{{ channelData.thirdAppId }}</span>
     </div>
     <div class="flex item-center margin-top-20">
       <span class="width-150">
         应用名称
       </span>
-      <span>{{ appName }}</span>
+      <span>{{ channelData.name }}</span>
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-150">
         选择支付通道
       </span>
-      <el-select v-model="payChannel" clearable placeholder="请选择支付通道">
+      <el-select v-model="channelData.channel" @change="valueChange" clearable placeholder="请选择支付通道">
         <el-option
           v-for="item in appTypeOptions"
           :key="item.value"
@@ -31,7 +31,8 @@
       </span>
       <el-input
         clearable
-        v-model="channelFirm"
+        v-model="channelData.mchId"
+        @input="valueChange"
         placeholder="输入支付通道商号"
         style="width: 200px;">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
@@ -45,7 +46,8 @@
         clearable
         placeholder="输入支付密钥"
         type="textarea"
-        v-model="paySecretKey"
+        @input="valueChange"
+        v-model="channelData.privateKey"
         style="max-width: 500px;">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
       </el-input>
@@ -58,7 +60,8 @@
         clearable
         placeholder="输入支付公钥"
         type="textarea"
-        v-model="payPublicKey"
+        @input="valueChange"
+        v-model="channelData.publicKey"
         style="max-width: 500px;">
         <i slot="suffix" class="el-icon-edit el-input__icon"></i>
       </el-input>
@@ -69,7 +72,8 @@
       </span>
       <el-input
         clearable
-        v-model="successNoticeUrl"
+        @input="valueChange"
+        v-model="channelData.notifyUrl"
         placeholder="可以自定义通知URL，默认由系统生成"
         style="width: 400px;">
       </el-input>
@@ -80,7 +84,8 @@
       </span>
       <el-input
         clearable
-        v-model="refundNoticeUrl"
+        v-model="channelData.refundNotifyUrl"
+        @input="valueChange"
         placeholder="可以自定义通知URL，默认由系统生成"
         style="width: 400px;">
       </el-input>
@@ -98,7 +103,7 @@
         multiple
         :limit="3"
         :on-exceed="uploadExceed"
-        :file-list="uploadList">
+        :file-list="channelData.certFile">
         <el-button size="small" type="primary">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
@@ -109,6 +114,7 @@
 <script>
 export default {
   name: 'addChannel',
+  props: ['value'],
   data() {
     return {
       uploadList: [],
@@ -141,6 +147,9 @@ export default {
     }
   },
   methods: {
+    valueChange() {
+      this.$emit('input', this.thirdAppData)
+    },
     uploadRemove(file, fileList) {
       console.log(file, fileList)
     },
@@ -152,6 +161,11 @@ export default {
     },
     uploadBeforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${ file.name }？`)
+    }
+  },
+  computed: {
+    channelData() {
+      return this.value
     }
   }
 }
