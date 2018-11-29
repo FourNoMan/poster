@@ -7,13 +7,13 @@
           <span class="width-120">
             应用ID
           </span>
-          <span>{{ appId }}</span>
+          <span>{{ configRow.id }}</span>
         </div>
         <div class="flex item-center margin-top-20">
           <span class="width-120">
             应用名称
           </span>
-          <span>{{ appName }}</span>
+          <span>{{ configRow.name }}</span>
         </div>
         <div class="margin-top-20 flex item-center">
           <span class="width-120">
@@ -80,6 +80,11 @@ export default {
       expires: '',
       secretKey: '',
       configItem: '关联第三方应用'
+    }
+  },
+  computed: {
+    configRow() {
+      return this.$store.state.appManage.appConfigRow
     }
   }
 }

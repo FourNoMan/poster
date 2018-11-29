@@ -35,7 +35,6 @@
       <div class="flex flex-nowrap">
         <el-button type="primary">查询</el-button>
         <el-button type="primary" @click="dialogVisible = true">添加应用</el-button>
-        <el-button type="primary" @click="routerLink('appConfig')">配置应用</el-button>
       </div>
     </div>
     <div class="margin-top-20">
@@ -73,6 +72,7 @@ import dialogContent from './dialogAppEdit'
 import sdk from '@/api/sdk'
 export default {
   data() {
+    let that = this
     return {
       tableTest: [{
         date: '2016-05-02',
@@ -190,32 +190,19 @@ export default {
                 console.log(param, '++7777++')
               }
             }, {
-              label: '删除',
+              label: '应用配置',
               type: 'primary',
               fn: function(param) {
-                console.log(param, '++7777++')
+                that.$store.commit('SET_APPCONFIGROW', param)
+                that.routerLink('appConfig')
               }
             }],
-            width: 180,
+            width: 200,
             fixed: '',
             sortable: false
           }
         },
-        tableDatas: [{
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
+        tableItems: [{
           rowStatus: 'warning',
           id: 3,
           createdTime: '2016-05-02',
@@ -248,7 +235,7 @@ export default {
     }
   },
   methods: {
-    handleEdit(param) {
+    handleApp(param) {
       console.log(param, '++4444++')
     },
     addApp() {

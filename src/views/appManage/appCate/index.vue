@@ -76,10 +76,7 @@ export default {
     return {
       queryParam: {
         page: 1,
-        pageSize: 10,
-        name: '',
-        status: '',
-
+        pageSize: 10
       },
       total: 1,
       parentOptions: [],

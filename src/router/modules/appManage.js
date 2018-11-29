@@ -36,9 +36,9 @@ const appManage = [{
       ]
     },
     {
-      path: 'appType',
-      component: () => import('@/views/appManage/appType/index'),
-      name: 'appType',
+      path: 'appCate',
+      component: () => import('@/views/appManage/appCate/index'),
+      name: 'appCate',
       meta: { title: '应用分类', noCache: true }
     }
   ]
