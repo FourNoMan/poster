@@ -16,18 +16,18 @@
         <i slot="suffix"  class="el-icon-edit el-input__icon"></i>
       </el-input>
      <el-select clearable placeholder="状态">
-        <el-option>
-           vv
-        </el-option>
+       <el-option>
+         vv
+       </el-option>
      </el-select>
       <div class="flex flex-nowrap">
-        <el-button type="primary">查询</el-button>
-        <el-button type="primary">新建</el-button>
+        <el-button type="primary" @click="getCateList">查询</el-button>
+        <el-button type="primary" @click="cateEdite">新建</el-button>
         <el-button type="primary">配置应用</el-button>
       </div>
     </div>
     <div class="margin-top-20">
-      <table-comp :tableData="tableData"></table-comp>
+      <table-comp :tableData="tableData" :parentIds="parentOptions"></table-comp>
     </div>
     <div class="flex margin-top-10">
       <el-pagination
@@ -40,6 +40,45 @@
         @current-change="handleCurrentChange">
       </el-pagination>
     </div>
+    <el-dialog title="渠道应答码信息" width="80%" :visible="dialogVisible" center style="margin-top: -10vh">
+      <app-edit v-model="cateData" >
+     <!--   <div class="flex item-center">-->
+        <span class="width-120 margin-left-20">
+          分类名称
+        </span>
+        <el-input
+          clearable
+          placeholder="应用名称"
+          style="width: 200px;" @input="valueChange"  v-model="cateData.name">
+          <i slot="suffix" class="el-icon-edit el-input__icon"></i>
+        </el-input>
+        <span class="width-120 margin-left-20">
+          分类名称
+        </span>
+        <el-input
+          clearable
+          placeholder="应用名称"
+          style="width: 200px;" @input="valueChange"  v-model="cateData.name">
+          <i slot="suffix" class="el-icon-edit el-input__icon"></i>
+        </el-input>
+        <span class="width-120  margin-left-20">
+         应用分类
+        </span>
+        <el-select clearable placeholder="请选择分类"  v-model="cateData.parentId">
+          <el-option
+            v-for="item in parentOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      <!--  </div>-->
+      </app-edit>
+      <span slot="footer" class="dialog-footer text-center">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogSubmit">确认</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -48,8 +87,16 @@
   import sdk from '@/api/sdk'
 export default {
   data() {
+    let that = this
     return {
-      dialogVisible: false,
+      dialogVisible:false,
+      prop:['value','parentIds'],
+      parentOptions:[],
+      cateData: {
+        parentId: 0,
+        name: '',
+        iconUrl: ''
+      },
       appTypeOptions: [
         {
           value: '选项1',
@@ -97,37 +144,37 @@ export default {
             fixed: '',
             sortable: false
           },
-          appType: {
+          iconUrl: {
             label: '应用分类',
             width: null,
             fixed: '',
             sortable: false
           },
-          platform: {
+          level: {
             label: '应用平台',
             width: null,
             fixed: '',
             sortable: false
           },
-          vbaoId: {
+          operatorId: {
             label: '微保AppID',
             width: null,
             fixed: '',
             sortable: false
           },
-          thirdNumber: {
+          parentName: {
             label: '第三方应用数',
             width: null,
             fixed: '',
             sortable: false
           },
-          relationConfig: {
+          parentId: {
             label: '关联配置',
             width: null,
             fixed: '',
             sortable: false
           },
-          responsibility: {
+          parentPath: {
             label: '负责人',
             width: null,
             fixed: '',
@@ -144,75 +191,134 @@ export default {
             buttons: [{
               label: '编辑',
               type: 'primary',
-              fn: function(param) {
-                console.log(param, '++7777++')
-              }
+              fn: that.cateEdite
             }, {
               label: '删除',
               type: 'primary',
-              fn: function(param) {
-                console.log(param, '++7777++')
-              }
+              fn:that.cateRemove
             }],
             width: 180,
             fixed: '',
             sortable: false
           }
         },
-        tableDatas: [{
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        tableItems:[]
       }
+    }
+  },
+  methods: {
+    getCateList(){
+      let obj={}
+      let that = this
+      sdk.admin_tenant_app_cate_list(obj).then(res=>{
+/*        console.log(res.data.data.dataList);*/
+        that.parentOptions = []
+        that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList));
+        that.tableData.tableItems.forEach(item=>{
+          /*console.log(item)*/
+           that.parentOptions.push({
+              label:item.name,
+             value:item.id
+           })
+        })
+      })
+    },
+    cateCreate() {
+      let that = this
+      console.log(sdk.admin_tenant_app_cate_create(this.cateData))
+      sdk.admin_tenant_app_cate_create(this.cateData)
+        .then(res => {
+          that.dialogVisible = false
+          that.getCateList()
+          that.isCateUpdate = false
+          that.$message({
+            message: '创建成功！',
+            type: 'success'
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },cateEdite(data){
+      for(let item in this.cateData){
+        this.cateData[item] = (data === undefined) ? null : data[item]
+      }
+    /*  this.getCateParent(data ? data.id : null)*/
+      this.dialogVisible = true
+    },dialogSubmit(){
+     /* if(this.isCateUpdate){
+          console.log('_______*****_________')
+      }else{*/
+        this.cateCreate();
+      /*}*/
+    },cateRemove(row){
+      console.log(row)
+    let that = this
+      if((row !== undefined) && (row !== null) && row.id) {
+        sdk.admin_tenant_app_cate_remove_children_all({ id: row.id })
+          .then(res => {
+            that.getCateList()
+            that.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    handleSizeChange() {
+      console.log('++++++++++++')
+    },
+    handleCurrentChange() {
+      console.log(10032);
+    },
+    valueChange() {
+      this.$emit('input', this.cateData)
     }
   },
  components: {
    tableComp
- }
+ },
+  created(){
+    this.getCateList();
+  },
+  computed: {
+    cateData() {
+      return this.value
+    },
+    parentOptions() {
+      return this.parentIds || []
+    }
+  }
 }
 </script>
 
 <style scoped>
-
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>
 
 
