@@ -86,11 +86,12 @@ export default {
         pageSize: 10
       },
       shortMessageItemData: {
-        bizName: '',
-        businessTitle: '',
-        bucketName: '',
-        isGroup: false,
-        groupType: ''
+        title: '',
+        channel: '',
+        appid: '',
+        accessKeyId: '',
+        region: '',
+        accessKeySecret: ''
       },
       total: 1,
       currentRow: '',
@@ -277,7 +278,7 @@ export default {
     shortMessageCreate() {
       let that = this
       console.log(this.shortMessageItemData, '++shortMessageItemData++')
-      sdk.admin_tenant_third_app_create(this.shortMessageItemData)
+      sdk.admin_sms_account_config_create(this.shortMessageItemData)
         .then(res => {
           console.log(res, '++shortMessageCreate++')
           that.dialogVisible = false
@@ -294,7 +295,7 @@ export default {
     },
     shortMessageUpdate() {
       let that = this
-      sdk.admin_tenant_third_app_update_by_id(this.shortMessageItemData)
+      sdk.admin_sms_account_config_update_by_id(this.shortMessageItemData)
         .then(res => {
           that.dialogVisible = false
           that.getShortMessageList()
@@ -315,7 +316,7 @@ export default {
     shortMessageRemove(row) {
       let that = this
       if((row !== undefined) && (row !== null) && row.id) {
-        sdk.admin_tenant_third_app_remove_by_id({ id: row.id })
+        sdk.admin_sms_account_config_remove_by_id({ id: row.id })
           .then(res => {
             that.removeDialogVisible = false
             that.getShortMessageList()
@@ -330,7 +331,7 @@ export default {
       }
     },
     dialogSubmit() {
-      if (this.shortMessageUpdate()) {
+      if (this.isShortMessageUpdate) {
         this.shortMessageUpdate()
       }
       else {

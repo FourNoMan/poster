@@ -92,3 +92,38 @@
   border-radius: 4px;
 }
 
+
+// element button type 扩展
+// type值为text-warning
+.el-button--text-warning{
+  color: #e6a23c;
+  background: 0 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: none;
+}
+.el-button--text-warning:hover{
+  color: #f9b041;
+}
+// type值为text-success
+.el-button--text-success{
+  color: #67c23a;
+  background: 0 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: none;
+}
+.el-button--text-success:hover{
+  color: #83d25c;
+}
+// type值为text-danger
+.el-button--text-danger{
+  color: #f56c6c;
+  background: 0 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: none;
+}
+.el-button--text-danger:hover{
+  color: #f38888;
+}

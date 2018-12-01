@@ -30,12 +30,14 @@
 
 <script>
 import tableComp from '@/components/TableComponent'
+import sdk from '@/api/sdk'
 export default {
   props: ['value'],
   components: {
     tableComp
   },
   data() {
+    let that = this
     return {
       queryParam: {
         page: 1,
@@ -55,122 +57,80 @@ export default {
             fixed: '',
             sortable: false
           },
-          name: {
-            label: '应用名称',
+          title: {
+            label: '模板名称',
             width: null,
             fixed: '',
             sortable: false
           },
           createdTime: {
-            label: '应用创建时间',
+            label: '创建时间',
             width: null,
             fixed: '',
             sortable: false
           },
           appType: {
-            label: '应用分类',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          platform: {
-            label: '应用平台',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          vbaoId: {
-            label: '微保AppID',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          thirdNumber: {
-            label: '第三方应用数',
+            label: '模板内容',
             width: null,
             fixed: '',
             sortable: false
           },
           relationConfig: {
-            label: '关联配置',
+            label: '说明',
             width: null,
             fixed: '',
             sortable: false
           },
-          responsibility: {
-            label: '负责人',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
-          status: {
-            label: '应用状态',
-            width: null,
-            fixed: '',
-            sortable: false
-          },
+          // responsibility: {
+          //   label: '创建人',
+          //   width: null,
+          //   fixed: '',
+          //   sortable: false
+          // },
           operation: {
             label: '操作',
             width: 80,
             buttons: [{
               label: '选用',
               type: 'primary',
-              fn: function() {
-                //  这里写“选用”函数处理逻辑
-                console.log('已经被选用了')
-              }
+              fn: that.addTemplateList
             }],
             fixed: '',
             sortable: false
           }
         },
-        tableItems: [{
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        tableItems: []
       }
     }
   },
   methods: {
+    getTemplateList() {
+      let obj = {}
+      let that = this
+      sdk.admin_sms_template_list(obj)
+        .then(res => {
+          that.total = res.data.data.total
+          that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
+          console.log(res, '++getTemplateList++')
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    addTemplateList(row) {
+      let obj = { templateId: row.id }
+      console.log(obj, '++obj++')
+      let that = this
+      sdk.admin_sms_channel_template_add_template(obj)
+        .then(res => {
+          // that.total = res.data.data.total
+          // that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
+          console.log(res, '++addTemplateList++')
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     handleSizeChange() {
       console.log('handleSizeChange')
     },
@@ -182,6 +142,9 @@ export default {
     smsTemplateData() {
       return this.value
     }
+  },
+  mounted() {
+    this.getTemplateList()
   }
 }
 </script>

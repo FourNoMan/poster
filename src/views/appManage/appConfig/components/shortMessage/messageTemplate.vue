@@ -122,7 +122,7 @@ export default {
             fixed: '',
             sortable: false
           },
-          name: {
+          title: {
             label: '模板名称',
             width: null,
             fixed: '',
@@ -134,31 +134,31 @@ export default {
             fixed: '',
             sortable: false
           },
-          appType: {
+          channel: {
             label: '短信通道',
             width: null,
             fixed: '',
             sortable: false
           },
-          platform: {
+          templateId: {
             label: '通道模板ID',
             width: null,
             fixed: '',
             sortable: false
           },
-          vbaoId: {
+          content: {
             label: '模板内容',
             width: null,
             fixed: '',
             sortable: false
           },
-          thirdNumber: {
+          description: {
             label: '说明',
             width: null,
             fixed: '',
             sortable: false
           },
-          relationConfig: {
+          operatorId: {
             label: '创建人',
             width: null,
             fixed: '',
@@ -186,49 +186,7 @@ export default {
             sortable: false
           }
         },
-        tableItems: [{
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        tableItems: []
       }
     }
   },
@@ -236,7 +194,7 @@ export default {
     getSmsTemplateList() {
       let obj = {}
       let that = this
-      sdk.admin_sms_account_config_list(obj)
+      sdk.admin_sms_channel_template_list(obj)
         .then(res => {
           that.total = res.data.data.total
           that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
@@ -262,7 +220,7 @@ export default {
     smsTemplateCreate() {
       let that = this
       console.log(this.smsTemplateItemData, '++smsTemplateItemData++')
-      sdk.admin_tenant_third_app_create(this.smsTemplateItemData)
+      sdk.admin_sms_template_create(this.smsTemplateItemData)
         .then(res => {
           console.log(res, '++smsTemplateCreate++')
           that.dialogVisible = false
@@ -279,7 +237,7 @@ export default {
     },
     smsTemplateUpdate() {
       let that = this
-      sdk.admin_tenant_third_app_update_by_id(this.smsTemplateItemData)
+      sdk.admin_sms_channel_template_update_by_id(this.smsTemplateItemData)
         .then(res => {
           that.dialogVisible = false
           that.getSmsTemplateList()
@@ -300,7 +258,7 @@ export default {
     smsTemplateRemove(row) {
       let that = this
       if((row !== undefined) && (row !== null) && row.id) {
-        sdk.admin_tenant_third_app_remove_by_id({ id: row.id })
+        sdk.admin_sms_channel_template_remove_by_id({ id: row.id })
           .then(res => {
             that.removeDialogVisible = false
             that.getSmsTemplateList()

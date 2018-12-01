@@ -117,11 +117,11 @@ export default {
             width: 160,
             buttons: [{
               label: '编辑',
-              type: 'primary',
+              type: 'text-warning',
               fn: that.thirdAppEdite
             }, {
               label: '删除',
-              type: 'primary',
+              type: 'text',
               fn: that.isRemove
             }],
             fixed: '',

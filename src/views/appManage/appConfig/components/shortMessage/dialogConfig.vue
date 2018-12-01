@@ -15,12 +15,24 @@
     </div>
     <div class="flex item-center margin-top-20">
       <span class="width-150">
+        短信名称
+      </span>
+      <el-input
+        clearable
+        placeholder="输入短信名称"
+        @input="valueChange"
+        style="width: 500px;"
+        v-model="shortMessageData.title">
+      </el-input>
+    </div>
+    <div class="flex item-center margin-top-20">
+      <span class="width-150">
         短信AppID
       </span>
       <el-input
         clearable
         placeholder="输入短信AppID"
-        @input="valueChanges"
+        @input="valueChange"
         style="width: 500px;"
         v-model="shortMessageData.appid">
       </el-input>
@@ -60,7 +72,7 @@
         placeholder="公网访问域名"
         @input="valueChange"
         style="width: 500px;"
-        v-model="shortMessageData.origin">
+        v-model="shortMessageData.region">
       </el-input>
     </div>
   </div>
@@ -78,20 +90,11 @@ export default {
       domainName: '',
       appTypeOptions: [
         {
-          value: '选项1',
-          label: '黄金糕'
+          value: 'ALIYUN',
+          label: '阿里云'
         }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
+          value: 'QCLOUD',
+          label: '腾讯云'
         }
       ]
     }

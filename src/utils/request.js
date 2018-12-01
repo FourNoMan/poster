@@ -21,6 +21,10 @@ axiosInstance.interceptors.request.use(
       config.headers['Auth-Token'] = getToken()
       config.headers['Access-Token'] = getAccessToken()
     }
+    else {
+    //   console.log(getAccessToken(), '++1212212++')
+      config.headers['Access-Token'] = getAccessToken()
+    }
     return config
   },
   error => {

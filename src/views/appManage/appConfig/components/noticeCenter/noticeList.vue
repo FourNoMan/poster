@@ -17,8 +17,8 @@
         </el-option>
       </el-select>
       <div class="flex flex-nowrap margin-left-20">
-        <el-button type="primary" @click="getShortMessageList">查询</el-button>
-        <el-button type="primary" @click="shortMessageEdite">添加</el-button>
+        <el-button type="primary" @click="getNoticeList">查询</el-button>
+        <el-button type="primary" @click="noticeEdite">添加</el-button>
       </div>
     </div>
     <div class="margin-top-20">
@@ -231,7 +231,7 @@ export default {
     getNoticeList() {
       let obj = {}
       let that = this
-      sdk.admin_sms_account_config_list(obj)
+      sdk.admin_tenant_notify_template_list(obj)
         .then(res => {
           that.total = res.data.data.total
           that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
@@ -325,7 +325,7 @@ export default {
     }
   },
   mounted() {
-    this.getNoticeList()
+    // this.getNoticeList()
   }
 }
 </script>

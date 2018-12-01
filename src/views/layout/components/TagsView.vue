@@ -9,6 +9,7 @@
         :key="tag.path"
         tag="span"
         class="tags-view-item"
+        style="display: inline;"
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
@@ -148,9 +149,10 @@ export default {
 .tags-view-container {
   height: 34px;
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  margin-top: 10px;
+  background: transparent;
+  /*border-bottom: 1px solid #d8dce5;*/
+  /*box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);*/
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
@@ -159,6 +161,7 @@ export default {
       height: 26px;
       line-height: 26px;
       border: 1px solid #d8dce5;
+      border-radius: 10px;
       color: #495060;
       background: #fff;
       padding: 0 8px;

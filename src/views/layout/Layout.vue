@@ -1,23 +1,23 @@
 <template>
   <div :class="classObj" class="app-wrapper flex flex-column">
-    <div class="full-width shrink-none flex item-center justify-between" style="height: 100px;background: #3b91b6;padding: 0 30px;">
+    <div class="full-width shrink-none flex item-center justify-between" style="height: 60px;background: rgba(36,42,48,1);padding:0 22px;">
       <div class="flex item-center">
-        <img style="height: 50px;" :src="'static/images/log.png'" alt="">
-        <span style="color: #FFFFFF;" class="font-size-28 margin-left-10">VBAO(新重构)交易系统</span>
+        <!--<img style="height: 50px;" :src="'static/images/log.png'" alt="">-->
+        <span style="color: #FFFFFF;" class="font-size-16 margin-left-10">VBAO(新重构)交易系统</span>
       </div>
       <div class="right-menu">
-        <template>
-          <error-log class="errLog-container right-menu-item"/>
+        <!--<template>-->
+          <!--<error-log class="errLog-container right-menu-item"/>-->
 
-          <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
-            <screenfull class="screenfull right-menu-item"/>
-          </el-tooltip>
-        </template>
+          <!--<el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">-->
+            <!--<screenfull class="screenfull right-menu-item"/>-->
+          <!--</el-tooltip>-->
+        <!--</template>-->
 
-        <el-dropdown class="avatar-container right-menu-item" trigger="click">
+        <el-dropdown class="right-menu-item" trigger="click">
           <div class="avatar-wrapper">
             <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-            <i class="el-icon-caret-bottom"/>
+            <!--<i class="el-icon-caret-bottom"/>-->
           </div>
           <el-dropdown-menu slot="dropdown">
             <router-link to="/">
@@ -35,10 +35,10 @@
     <div class="flex-1 overflow-hidden flex">
       <!--<div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>-->
       <sidebar class="sidebar-container"/>
-      <div class="main-container flex-1 flex flex-column">
+      <div class="main-container flex-1 flex flex-column" style="background-color: rgba(240,244,247,1)">
+        <tags-view/>
         <navbar class="shrink-none"/>
         <!--<el-button type="warning" @click="testSdk">click</el-button>-->
-        <!--<tags-view/>-->
         <app-main class="flex-1"/>
       </div>
     </div>
@@ -124,9 +124,9 @@ export default {
     z-index: 999;
   }
   .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
   }
   .right-menu {
     &:focus{
@@ -153,9 +153,9 @@ export default {
         margin-top: 5px;
         position: relative;
         .user-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
         }
         .el-icon-caret-bottom {
           position: absolute;

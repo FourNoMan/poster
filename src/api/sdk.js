@@ -38,7 +38,33 @@ Api['admin_tenant_third_app_get_one']={"url":"/admin/tenant_third_app/get_one","
 
 Api['admin_app_pay_channel_config_list']={"url":"/admin/app_pay_channel_config/list","method":"post",requestBody:true}
 
+
+Api['admin_sms_channel_template_list']={"url":"/admin/sms_channel_template/list","method":"post",requestBody:true}
+Api['admin_sms_channel_template_create']={"url":"/admin/sms_channel_template/create","method":"post",requestBody:true}
+Api['admin_sms_channel_template_update_by_id']={"url":"/admin/sms_channel_template/update_by_id","method":"post",requestBody:true}
+Api['admin_sms_channel_template_remove_by_id']={"url":"/admin/sms_channel_template/remove_by_id","method":"get"}
+Api['admin_sms_channel_template_add_template']={"url":"/admin/sms_channel_template/add_template","method":"get"}
+
+Api['admin_sms_template_list']={"url":"/admin/sms_template/list","method":"post",requestBody:true}
+Api['admin_sms_template_create']={"url":"/admin/sms_template/create","method":"post",requestBody:true}
+Api['admin_sms_template_update_by_id']={"url":"/admin/sms_template/update_by_id","method":"post",requestBody:true}
+Api['admin_sms_template_remove_by_id']={"url":"/admin/sms_template/remove_by_id","method":"get"}
+
 Api['admin_sms_account_config_list']={"url":"/admin/sms_account_config/list","method":"post",requestBody:true}
+Api['admin_sms_account_config_create']={"url":"/admin/sms_account_config/create","method":"post",requestBody:true}
+Api['admin_sms_account_config_update_by_id']={"url":"/admin/sms_account_config/update_by_id","method":"post",requestBody:true}
+Api['admin_sms_account_config_remove_by_id']={"url":"/admin/sms_account_config/remove_by_id","method":"get"}
+
+Api['admin_notify_template_list']={"url":"/admin/notify_template/list","method":"post",requestBody:true}
+Api['admin_notify_template_create']={"url":"/admin/notify_template/create","method":"post",requestBody:true}
+Api['admin_notify_template_update_by_id']={"url":"/admin/notify_template/update_by_id","method":"post",requestBody:true}
+Api['admin_notify_template_remove_by_id']={"url":"/admin/notify_template/remove_by_id","method":"get"}
+
+Api['admin_tenant_notify_template_list']={"url":"/admin/tenant_notify_template/list","method":"post",requestBody:true}
+Api['admin_tenant_notify_template_create']={"url":"/admin/tenant_notify_template/create","method":"post",requestBody:true}
+Api['admin_tenant_notify_template_update_by_id']={"url":"/admin/tenant_notify_template/update_by_id","method":"post",requestBody:true}
+Api['admin_tenant_notify_template_remove_by_id']={"url":"/admin/tenant_notify_template/remove_by_id","method":"get"}
+
 
 Api['admin_tenant_app_cate_download']={"url":"/admin/tenant_app_cate/download","method":"get","download":true}
 Api['admin_tenant_app_cate_get_by_id']={"url":"/admin/tenant_app_cate/get_by_id","method":"get"}
