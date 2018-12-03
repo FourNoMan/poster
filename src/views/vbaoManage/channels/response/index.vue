@@ -40,7 +40,8 @@
         @current-change="handleCurrentChange">
       </el-pagination>
     </div>
-    <el-dialog title="渠道应答码信息" width="80%" :visible="dialogVisible" center style="margin-top: -10vh">
+    <el-dialog title="渠道应答码信息" width="80%" :visible.sync="dialogVisible"
+        :close-on-click-modal="false" center style="margin-top: -10vh">
       <app-edit v-model="cateData" >
      <!--   <div class="flex item-center">-->
         <span class="width-120 margin-left-20">
@@ -249,12 +250,14 @@ export default {
      /* if(this.isCateUpdate){
           console.log('_______*****_________')
       }else{*/
+      console.log("+++++++010+++++");
         this.cateCreate();
       /*}*/
     },cateRemove(row){
       console.log(row)
     let that = this
       if((row !== undefined) && (row !== null) && row.id) {
+        console.log(row);
         sdk.admin_tenant_app_cate_remove_children_all({ id: row.id })
           .then(res => {
             that.getCateList()
