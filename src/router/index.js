@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/views/layout/Layout'
+import layoutAli from '@/views/layout/layoutAli/index'
 
 /* Router Modules */
 import componentsRouter from './modules/components'
@@ -33,6 +34,11 @@ import appManage from './modules/appManage'
   }
 **/
 export const constantRouterMap = [
+  {
+    path: '/ali',
+    component: layoutAli,
+    hidden: false
+  },
   {
     path: '/redirect',
     component: Layout,

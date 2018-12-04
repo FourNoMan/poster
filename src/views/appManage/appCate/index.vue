@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column padding-row-30">
+  <div class="flex flex-column padding-row-10 padding-bottom-10" style="background-color: #FFFFFF;">
     <div class="flex justify-between item-center">
       <el-input
         clearable
@@ -40,7 +40,7 @@
     <div class="margin-top-20">
       <table-comp :tableData="tableData"></table-comp>
     </div>
-    <div class="flex margin-top-10">
+    <div class="flex margin-top-10 justify-end">
       <el-pagination
         :current-page="queryParam.page"
         :page-sizes="[10, 20, 50, 100]"

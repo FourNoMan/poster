@@ -10,6 +10,7 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
+      <!--<hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>-->
       <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path"/>
     </el-menu>
   </el-scrollbar>
@@ -18,9 +19,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
+import Hamburger from '@/components/Hamburger'
 
 export default {
-  components: { SidebarItem },
+  components: { SidebarItem, Hamburger },
   computed: {
     ...mapGetters([
       'permission_routers',
@@ -28,6 +30,11 @@ export default {
     ]),
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch('toggleSideBar')
     }
   }
 }

@@ -35,10 +35,9 @@
     <div class="flex-1 overflow-hidden flex">
       <!--<div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>-->
       <sidebar class="sidebar-container"/>
-      <div class="main-container flex-1 flex flex-column" style="background-color: rgba(240,244,247,1)">
+      <div class="main-container flex-1 flex flex-column main-bgcolor main-padding">
         <tags-view/>
-        <navbar class="shrink-none"/>
-        <!--<el-button type="warning" @click="testSdk">click</el-button>-->
+        <navbar class="shrink-none" style="background-color: #FFFFFF;"/>
         <app-main class="flex-1"/>
       </div>
     </div>
@@ -85,11 +84,6 @@ export default {
     }
   },
   methods: {
-    testSdk() {
-      SDK['test']().then(data => {
-        console.log(data, '++60949++')
-      })
-    },
     handleClickOutside() {
       this.$store.dispatch('closeSideBar', { withoutAnimation: false })
     },
