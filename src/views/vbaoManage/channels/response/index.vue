@@ -44,26 +44,32 @@
         :close-on-click-modal="false" center style="margin-top: -10vh">
       <app-edit v-model="cateData" >
      <!--   <div class="flex item-center">-->
+        <el-row :gutter="20">
+          <el-col :span="6">
         <span class="width-120 margin-left-20">
-          分类名称
+          渠道名称
         </span>
         <el-input
           clearable
-          placeholder="应用名称"
+          placeholder="渠道名称"
           style="width: 200px;" @input="valueChange"  v-model="cateData.name">
           <i slot="suffix" class="el-icon-edit el-input__icon"></i>
         </el-input>
+          </el-col>
+          <el-col :span="6">
         <span class="width-120 margin-left-20">
-          分类名称
+          渠道应答码
         </span>
         <el-input
           clearable
-          placeholder="应用名称"
+          placeholder="渠道应答码"
           style="width: 200px;" @input="valueChange"  v-model="cateData.name">
           <i slot="suffix" class="el-icon-edit el-input__icon"></i>
         </el-input>
+          </el-col>
+          <el-col :span="6">
         <span class="width-120  margin-left-20">
-         应用分类
+        渠道应答信息
         </span>
         <el-select clearable placeholder="请选择分类"  v-model="cateData.parentId">
           <el-option
@@ -73,6 +79,36 @@
             :value="item.value">
           </el-option>
         </el-select>
+          </el-col>
+          <el-col :span="6">
+        <span class="width-120  margin-left-20">
+        平台应答信息
+        </span>
+        <el-select clearable placeholder="请选择"  v-model="cateData.parentId">
+          <el-option
+            v-for="item in parentOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+          </el-col>
+        </el-row>
+       <!-- <el-row :gutter="20">
+          <el-col :span="6">
+        <span class="width-120 margin-left-20">
+
+        </span>
+       <el-select clearable placeholder="请选择"  v-model="cateData.parentId">
+          <el-option
+            v-for="item in parentOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+          </el-col>
+        </el-row>-->
       <!--  </div>-->
       </app-edit>
       <span slot="footer" class="dialog-footer text-center">
@@ -111,7 +147,7 @@ export default {
         }, {
           value: '选项4',
           label: '龙须面'
-        }, {
+        },{
           value: '选项5',
           label: '北京烤鸭'
         }
@@ -121,6 +157,7 @@ export default {
       appSataus: '',
       appType: '',
       currentPage: 1,
+      isCateUpdate: false,
       tableData: {
         stripe: true,
         maxHeight: '100%',
@@ -215,20 +252,22 @@ export default {
 /*        console.log(res.data.data.dataList);*/
         that.parentOptions = []
         that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList));
+        console.log(that.tableData.tableItems);
         that.tableData.tableItems.forEach(item=>{
           /*console.log(item)*/
            that.parentOptions.push({
               label:item.name,
              value:item.id
            })
+          console.log(that.parentOptions);
         })
       })
     },
     cateCreate() {
       let that = this
-      console.log(sdk.admin_tenant_app_cate_create(this.cateData))
       sdk.admin_tenant_app_cate_create(this.cateData)
         .then(res => {
+          console.log(res);
           that.dialogVisible = false
           that.getCateList()
           that.isCateUpdate = false
@@ -244,17 +283,14 @@ export default {
       for(let item in this.cateData){
         this.cateData[item] = (data === undefined) ? null : data[item]
       }
-    /*  this.getCateParent(data ? data.id : null)*/
       this.dialogVisible = true
     },dialogSubmit(){
-     /* if(this.isCateUpdate){
-          console.log('_______*****_________')
-      }else{*/
-      console.log("+++++++010+++++");
+      if(this.isCateUpdate){
+        this.getCateList();
+      }else{
         this.cateCreate();
-      /*}*/
+      }
     },cateRemove(row){
-      console.log(row)
     let that = this
       if((row !== undefined) && (row !== null) && row.id) {
         console.log(row);
@@ -272,7 +308,6 @@ export default {
       }
     },
     handleSizeChange() {
-      console.log('++++++++++++')
     },
     handleCurrentChange() {
       console.log(10032);
