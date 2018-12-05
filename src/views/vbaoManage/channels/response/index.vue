@@ -22,7 +22,7 @@
      </el-select>
       <div class="flex flex-nowrap">
         <el-button type="primary" @click="getCateList">查询</el-button>
-        <el-button type="primary" @click="cateEdite">新建</el-button>
+        <el-button type="primary" @click="cateCreate">新建</el-button>
         <el-button type="primary">配置应用</el-button>
       </div>
     </div>
@@ -182,37 +182,37 @@ export default {
             fixed: '',
             sortable: false
           },
-          iconUrl: {
+          tenantId: {
             label: '应用分类',
             width: null,
             fixed: '',
             sortable: false
           },
-          level: {
+          thirdPlatform: {
             label: '应用平台',
             width: null,
             fixed: '',
             sortable: false
           },
-          operatorId: {
+          appid: {
             label: '微保AppID',
             width: null,
             fixed: '',
             sortable: false
           },
-          parentName: {
+          reExpiresIn: {
             label: '第三方应用数',
             width: null,
             fixed: '',
             sortable: false
           },
-          parentId: {
-            label: '关联配置',
+          status: {
+            label: '状态',
             width: null,
             fixed: '',
             sortable: false
           },
-          parentPath: {
+          ownerName: {
             label: '负责人',
             width: null,
             fixed: '',
@@ -246,24 +246,26 @@ export default {
   },
   methods: {
     getCateList(){
-      let obj={}
+      let str={}
       let that = this
-      sdk.admin_tenant_app_cate_list(obj).then(res=>{
-/*        console.log(res.data.data.dataList);*/
-        that.parentOptions = []
+      sdk.admin_tenant_third_app_list(str).then(res=>{
+        console.log(res);
         that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList));
         console.log(that.tableData.tableItems);
         that.tableData.tableItems.forEach(item=>{
-          /*console.log(item)*/
-           that.parentOptions.push({
-              label:item.name,
-             value:item.id
-           })
-          console.log(that.parentOptions);
-        })
+         that.tableData.tableItems.push(item)
+       })
+      }).catch(error=>{
+        console.log("网络异常")
       })
     },
-    cateCreate() {
+    cateCreate(){
+      let that=this
+      sdk.admin_tenant_third_app_create(str).then(res=>{
+        that.dialogVisible = true
+      })
+    },
+   /* cateCreate() {
       let that = this
       sdk.admin_tenant_app_cate_create(this.cateData)
         .then(res => {
@@ -306,15 +308,15 @@ export default {
             console.log(error)
           })
       }
-    },
+    },*/
     handleSizeChange() {
     },
     handleCurrentChange() {
       console.log(10032);
     },
-    valueChange() {
+/*    valueChange() {
       this.$emit('input', this.cateData)
-    }
+    }*/
   },
  components: {
    tableComp
@@ -323,9 +325,9 @@ export default {
     this.getCateList();
   },
   computed: {
-    cateData() {
+ /*   cateData() {
       return this.value
-    },
+    },*/
     parentOptions() {
       return this.parentIds || []
     }

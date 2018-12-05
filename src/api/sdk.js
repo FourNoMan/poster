@@ -29,7 +29,7 @@ Api['admin_tenant_get_one']={"url":"/admin/tenant/get_one","method":"get"}
 Api['admin_tenant_third_app_create']={"url":"/admin/tenant_third_app/create","method":"get"}
 Api['admin_tenant_third_app_remove_by_id']={"url":"/admin/tenant_third_app/remove_by_id","method":"get"}
 Api['admin_tenant_third_app_update_by_id']={"url":"/admin/tenant_third_app/update_by_id","method":"get"}
-Api['admin_tenant_third_app_list']={"url":"/admin/tenant_third_app/list","method":"get"}
+Api['admin_tenant_third_app_list']={"url":"/admin/tenant_third_app/list","method":"post",requestBody:true}
 Api['admin_tenant_third_app_get_by_id']={"url":"/admin/tenant_third_app/get_by_id","method":"get"}
 Api['admin_tenant_third_app_list_all']={"url":"/admin/tenant_third_app/list_all","method":"get"}
 Api['admin_tenant_third_app_get_one']={"url":"/admin/tenant_third_app/get_one","method":"get"}
@@ -53,12 +53,7 @@ Api['admin_tenant_third_app_download']={"url":"/admin/tenant_third_app/download"
 Api['admin_tenant_third_app_create']={"url":"/admin/tenant_third_app/create","method":"get"}
 Api['admin_tenant_third_app_remove_by_id']={"url":"/admin/tenant_third_app/remove_by_id","method":"get"}
 Api['admin_tenant_third_app_update_by_id']={"url":"/admin/tenant_third_app/update_by_id","method":"get"}
-Api['admin_tenant_third_app_list']={"url":"/admin/tenant_third_app/list","method":"get"}
 Api['admin_tenant_third_app_get_by_id']={"url":"/admin/tenant_third_app/get_by_id","method":"get"}
-Api['admin_tenant_third_app_list_all']={"url":"/admin/tenant_third_app/list_all","method":"get"}
-Api['admin_tenant_third_app_get_one']={"url":"/admin/tenant_third_app/get_one","method":"get"}
-
-
 //  应用管理
 
 const APISDK={};
