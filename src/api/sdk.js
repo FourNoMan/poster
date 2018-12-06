@@ -84,7 +84,6 @@ Api['admin_tenant_third_app_download']={"url":"/admin/tenant_third_app/download"
 Api['admin_tenant_third_app_get_by_id']={"url":"/admin/tenant_third_app/get_by_id","method":"get"}
 Api['admin_tenant_third_app_get_one']={"url":"/admin/tenant_third_app/get_one","method":"get"}
 
-
 //  应用管理
 
 const APISDK={};
