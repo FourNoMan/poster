@@ -198,49 +198,7 @@ export default {
             sortable: false
           }
         },
-        tableItems: [{
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          rowStatus: 'warning',
-          id: 3,
-          createdTime: '2016-05-02',
-          name: '王小虎',
-          appType: '-',
-          platform: '微信小程序',
-          vbaoId: '121232',
-          thirdNumber: 4,
-          relationConfig: 9,
-          responsibility: '特朗普',
-          status: '开启',
-          operation: '待定',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        tableItems: []
       }
     }
   },
