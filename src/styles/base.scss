@@ -150,6 +150,10 @@
   padding-left: 30px;
 }
 
+.padding-row-138{
+  padding-left: 138px;
+  padding-right: 138px;
+}
 .padding-row-30{
   padding-left: 30px;
   padding-right: 30px;
@@ -166,7 +170,10 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-
+.padding-column-30{
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
 
 
 //  border相关属性class
@@ -176,6 +183,9 @@
 
 .font-weight{
   font-weight: 900;
+}
+.font-size-12{
+  font-size: 12px;
 }
 .font-size-16{
   font-size: 16px;
@@ -219,4 +229,9 @@
 // list
 .list-style-none{
   list-style: none;
+}
+
+
+.color-red{
+  color: red;
 }

@@ -37,6 +37,16 @@
         </span>
       </el-form-item>
 
+
+
+      <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <div class="flex justify-between">
+        <el-checkbox class="flex justify-flex-end item-center margin-bottom-10" v-model="accountInfo.remember">记住密码</el-checkbox>
+        <el-button class="flex justify-flex-end item-center margin-bottom-10" type="text" style="color: #FFFFFF;" @click="routerLink('/signup')">
+          <span>去注册</span>
+          <i class="el-icon-back" style="transform: rotate(180deg)"></i>
+        </el-button>
+      </div>
       <el-checkbox class="flex justify-flex-end item-center margin-bottom-10" v-model="accountInfo.remember">记住密码</el-checkbox>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
