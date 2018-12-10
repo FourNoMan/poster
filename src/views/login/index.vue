@@ -47,9 +47,6 @@
           <i class="el-icon-back" style="transform: rotate(180deg)"></i>
         </el-button>
       </div>
-      <el-checkbox class="flex justify-flex-end item-center margin-bottom-10" v-model="accountInfo.remember">记住密码</el-checkbox>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
       <!--<div class="tips">-->
         <!--<span>{{ $t('login.username') }} : admin</span>-->
@@ -135,6 +132,9 @@ export default {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    routerLink(route) {
+      this.$router.push(route)
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -158,7 +158,8 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          this.$store.dispatch('loginByMobile', this.loginForm).then(() => {
+            console.log('登陆成功！！！！')
             this.loading = false
             if(this.accountInfo.remember) {
               Cookie.set(this.accountInfo.cookieName, this.loginForm, { expires: this.accountInfo.time })
