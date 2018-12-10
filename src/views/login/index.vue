@@ -42,7 +42,7 @@
       <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
       <div class="flex justify-between">
         <el-checkbox class="flex justify-flex-end item-center margin-bottom-10" v-model="accountInfo.remember">记住密码</el-checkbox>
-        <el-button class="flex justify-flex-end item-center margin-bottom-10" type="text" style="color: #FFFFFF;">
+        <el-button class="flex justify-flex-end item-center margin-bottom-10" type="text" style="color: #FFFFFF;" @click="routerLink('/signup')">
           <span>去注册</span>
           <i class="el-icon-back" style="transform: rotate(180deg)"></i>
         </el-button>
@@ -132,6 +132,9 @@ export default {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    routerLink(route) {
+      this.$router.push(route)
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -155,7 +158,8 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          this.$store.dispatch('loginByMobile', this.loginForm).then(() => {
+            console.log('登陆成功！！！！')
             this.loading = false
             if(this.accountInfo.remember) {
               Cookie.set(this.accountInfo.cookieName, this.loginForm, { expires: this.accountInfo.time })

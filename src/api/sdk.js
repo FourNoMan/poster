@@ -1,5 +1,8 @@
 import { api_request } from '@/utils/request'
 const Api={};
+Api['admin_staff_create']={"url":"/admin/staff/create","method":"post",requestBody:true}
+Api['admin_user_login_mobile_password']={"url":"/admin/user/login/mobile_password","method":"post",requestBody:true}
+
 Api['admin_tenant_app_cate_create']={"url":"/admin/tenant_app_cate/create","method":"post",requestBody:true}
 Api['admin_tenant_app_cate_remove_by_id']={"url":"/admin/tenant_app_cate/remove_by_id","method":"get"}
 Api['admin_tenant_app_cate_update_by_id']={"url":"/admin/tenant_app_cate/update_by_id","method":"post",requestBody:true}

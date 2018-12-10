@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import sdk from '@/api/sdk'
 
 export function loginByUsername(username, password) {
   const data = {
@@ -10,6 +11,14 @@ export function loginByUsername(username, password) {
     method: 'post',
     data
   })
+}
+
+export function loginByMobile(mobile, password) {
+  const data = {
+    mobile,
+    password
+  }
+  return sdk.admin_user_login_mobile_password(data)
 }
 
 export function logout() {
