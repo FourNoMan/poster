@@ -1,4 +1,6 @@
 <template>
+  <div class="flex flex-column full-height full-width">
+    <div class="full-width flex item-center shrink-none" style="height: 60px;background: #171a21;">
   <div class="felx flex-column full-height full-width">
     <!--原生手写-->
     <div class="full-width flex item-center margin-top-20" style="height: 60px;background: #171a21;">
@@ -13,6 +15,54 @@
       <!--右侧功能-->
       <div class="flex-1 flex justify-end full-height">
         <menu-list :menuData="menuRightData"></menu-list>
+        <!--<el-dropdown class="pointer padding-row-15">-->
+          <!--<span class="el-dropdown-link">-->
+            <!--<el-badge :value="12" class="item" type="primary">-->
+              <!--<i class="el-icon-bell" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
+            <!--</el-badge>-->
+          <!--</span>-->
+          <!--<el-dropdown-menu slot="dropdown">-->
+            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
+            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
+            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
+          <!--</el-dropdown-menu>-->
+        <!--</el-dropdown>-->
+        <!--<el-dropdown class="pointer padding-row-15">-->
+          <!--<span class="el-dropdown-link">-->
+            <!--<i class="el-icon-tickets" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
+          <!--</span>-->
+          <!--<el-dropdown-menu slot="dropdown">-->
+            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
+            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
+            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
+          <!--</el-dropdown-menu>-->
+        <!--</el-dropdown>-->
+        <!--<el-dropdown class="pointer padding-row-15">-->
+          <!--<span class="el-dropdown-link">-->
+            <!--<i class="el-icon-question" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
+          <!--</span>-->
+          <!--<el-dropdown-menu slot="dropdown">-->
+            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
+            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
+            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
+          <!--</el-dropdown-menu>-->
+        <!--</el-dropdown>-->
+        <!--<el-dropdown class="pointer padding-row-15" trigger="click">-->
+          <!--<div class="flex item-center">-->
+            <!--<img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">-->
+            <!--<span>18633422116[子账号]</span>-->
+          <!--</div>-->
+          <!--<el-dropdown-menu slot="dropdown">-->
+            <!--<router-link to="/">-->
+              <!--<el-dropdown-item>-->
+                <!--{{ $t('navbar.dashboard') }}-->
+              <!--</el-dropdown-item>-->
+            <!--</router-link>-->
+            <!--<el-dropdown-item divided>-->
+              <!--<span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>-->
+            <!--</el-dropdown-item>-->
+          <!--</el-dropdown-menu>-->
+        <!--</el-dropdown>-->
       </div>
     </div>
     <!--navbar-->
