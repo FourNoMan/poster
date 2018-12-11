@@ -1,139 +1,6 @@
 <template>
-  <div class="felx flex-column full-height full-width">
-    <!--顶部栏-->
-    <!--<div class="full-width flex item-center" style="height: 60px;background: #171a21;">-->
-      <!--&lt;!&ndash;左侧logo部分&ndash;&gt;-->
-      <!--<div>-->
-        <!--<span style="color: #FFFFFF;" class="font-size-16 padding-left-30 padding-right-15 pointer">VBAO交易系统</span>-->
-        <!--<span style="color: #999999;">|</span>-->
-        <!--<span class="padding-left-15 padding-right-30 pointer" style="color: #FFF;">小程序</span>-->
-      <!--</div>-->
-      <!--&lt;!&ndash;左侧menu部分&ndash;&gt;-->
-      <!--<div>-->
-        <!--<el-menu-->
-          <!--:default-active="activeIndex"-->
-          <!--class="el-menu-demo"-->
-          <!--mode="horizontal"-->
-          <!--@select="handleSelect"-->
-          <!--background-color="#171a21"-->
-          <!--text-color="#fff"-->
-          <!--active-text-color="#ffd04b">-->
-          <!--<el-submenu index="1">-->
-            <!--<template slot="title">运营中心</template>-->
-            <!--<el-menu-item-group>-->
-              <!--<template slot="title">-->
-                <!--<i class="el-icon-menu"></i>-->
-                <!--<span>开发管理</span>-->
-              <!--</template>-->
-              <!--<el-menu-item index="1-1">选项1</el-menu-item>-->
-              <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
-            <!--</el-menu-item-group>-->
-            <!--<el-menu-item-group>-->
-              <!--<template slot="title">-->
-                <!--<i class="el-icon-service"></i>-->
-                <!--<span>开发服务</span>-->
-              <!--</template>-->
-              <!--<el-menu-item index="1-3">选项3</el-menu-item>-->
-              <!--<el-menu-item index="1-4">选项4</el-menu-item>-->
-            <!--</el-menu-item-group>-->
-          <!--</el-submenu>-->
-          <!--<el-submenu index="2">-->
-            <!--<template slot="title">开发中心</template>-->
-            <!--<el-menu-item-group>-->
-              <!--<template slot="title">-->
-                <!--<i class="el-icon-menu"></i>-->
-                <!--<span>开发管理</span>-->
-              <!--</template>-->
-              <!--<el-menu-item index="2-1">选项1</el-menu-item>-->
-              <!--<el-menu-item index="2-2">选项2</el-menu-item>-->
-            <!--</el-menu-item-group>-->
-            <!--<el-menu-item-group>-->
-              <!--<template slot="title">-->
-                <!--<i class="el-icon-service"></i>-->
-                <!--<span>开发服务</span>-->
-              <!--</template>-->
-              <!--<el-menu-item index="2-3">选项3</el-menu-item>-->
-              <!--<el-menu-item index="2-4">选项4</el-menu-item>-->
-            <!--</el-menu-item-group>-->
-          <!--</el-submenu>-->
-          <!--<el-submenu index="3">-->
-            <!--<template slot="title">数据中心</template>-->
-            <!--<el-menu-item-group>-->
-              <!--<template slot="title">-->
-                <!--<i class="el-icon-menu"></i>-->
-                <!--<span>开发管理</span>-->
-              <!--</template>-->
-              <!--<el-menu-item index="3-1">选项1</el-menu-item>-->
-              <!--<el-menu-item index="3-2">选项2</el-menu-item>-->
-            <!--</el-menu-item-group>-->
-          <!--</el-submenu>-->
-          <!--<el-submenu index="4">-->
-            <!--<template slot="title">产品中心</template>-->
-            <!--<el-menu-item-group>-->
-              <!--<template slot="title">-->
-                <!--<i class="el-icon-menu"></i>-->
-                <!--<span>开发管理</span>-->
-              <!--</template>-->
-              <!--<el-menu-item index="4-1">选项1</el-menu-item>-->
-              <!--<el-menu-item index="4-2">选项2</el-menu-item>-->
-            <!--</el-menu-item-group>-->
-          <!--</el-submenu>-->
-        <!--</el-menu>-->
-      <!--</div>-->
-      <!--&lt;!&ndash;右侧功能&ndash;&gt;-->
-      <!--<div class="flex-1 flex justify-end">-->
-        <!--<el-dropdown class="pointer padding-row-15">-->
-          <!--<span class="el-dropdown-link">-->
-            <!--<el-badge :value="12" class="item" type="primary">-->
-              <!--<i class="el-icon-bell" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
-            <!--</el-badge>-->
-          <!--</span>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
-            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
-            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-        <!--<el-dropdown class="pointer padding-row-15">-->
-          <!--<span class="el-dropdown-link">-->
-            <!--<i class="el-icon-tickets" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
-          <!--</span>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
-            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
-            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-        <!--<el-dropdown class="pointer padding-row-15">-->
-          <!--<span class="el-dropdown-link">-->
-            <!--<i class="el-icon-question" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
-          <!--</span>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
-            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
-            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-        <!--<el-dropdown class="pointer padding-row-15" trigger="click">-->
-          <!--<div class="flex item-center">-->
-            <!--<img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">-->
-            <!--<span>18633422116[子账号]</span>-->
-          <!--</div>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<router-link to="/">-->
-              <!--<el-dropdown-item>-->
-                <!--{{ $t('navbar.dashboard') }}-->
-              <!--</el-dropdown-item>-->
-            <!--</router-link>-->
-            <!--<el-dropdown-item divided>-->
-              <!--<span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>-->
-            <!--</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--原生手写-->
-    <div class="full-width flex item-center margin-top-20" style="height: 60px;background: #171a21;">
+  <div class="flex flex-column full-height full-width">
+    <div class="full-width flex item-center shrink-none" style="height: 60px;background: #171a21;">
       <!--左侧logo部分-->
       <div>
         <span style="color: #FFFFFF;" class="font-size-16 padding-left-30 padding-right-15 pointer">VBAO交易系统</span>
@@ -145,68 +12,26 @@
       <!--右侧功能-->
       <div class="flex-1 flex justify-end full-height">
         <menu-list :menuData="menuRightData"></menu-list>
-        <!--<el-dropdown class="pointer padding-row-15">-->
-          <!--<span class="el-dropdown-link">-->
-            <!--<el-badge :value="12" class="item" type="primary">-->
-              <!--<i class="el-icon-bell" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
-            <!--</el-badge>-->
-          <!--</span>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
-            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
-            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-        <!--<el-dropdown class="pointer padding-row-15">-->
-          <!--<span class="el-dropdown-link">-->
-            <!--<i class="el-icon-tickets" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
-          <!--</span>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
-            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
-            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-        <!--<el-dropdown class="pointer padding-row-15">-->
-          <!--<span class="el-dropdown-link">-->
-            <!--<i class="el-icon-question" style="font-size: 24px;color: #999;margin-right: 4px;"></i>-->
-          <!--</span>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<el-dropdown-item>黄金糕</el-dropdown-item>-->
-            <!--<el-dropdown-item>狮子头</el-dropdown-item>-->
-            <!--<el-dropdown-item>螺蛳粉</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-        <!--<el-dropdown class="pointer padding-row-15" trigger="click">-->
-          <!--<div class="flex item-center">-->
-            <!--<img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">-->
-            <!--<span>18633422116[子账号]</span>-->
-          <!--</div>-->
-          <!--<el-dropdown-menu slot="dropdown">-->
-            <!--<router-link to="/">-->
-              <!--<el-dropdown-item>-->
-                <!--{{ $t('navbar.dashboard') }}-->
-              <!--</el-dropdown-item>-->
-            <!--</router-link>-->
-            <!--<el-dropdown-item divided>-->
-              <!--<span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>-->
-            <!--</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
       </div>
     </div>
     <!--navbar-->
-    <div>
-      <navbar class="shrink-none" style="background-color: #FFFFFF;border-bottom: 1px solid #999999;"/>
-    </div>
-    <div>
-      app main
+    <!--<div>-->
+      <!--<navbar class="shrink-none" style="background-color: #FFFFFF;border-bottom: 1px solid #999999;"/>-->
+    <!--</div>-->
+    <div class="flex-1 flex overflow-hidden">
+      <!--<div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>-->
+      <!--<sidebar class="sidebar-container"/>-->
+      <div class="main-container flex-1 flex flex-column main-bgcolor main-padding">
+        <tags-view/>
+        <navbar class="shrink-none" style="background-color: #FFFFFF;"/>
+        <app-main class="flex-1 overflow-auto"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Navbar } from '../components'
+import { Navbar, Sidebar, AppMain, TagsView } from '../components'
 import { mapGetters } from 'vuex'
 import menuList from './components/menu'
 import sdk from '@/api/sdk'
@@ -600,7 +425,10 @@ export default {
   },
   components: {
     Navbar,
-    menuList
+    menuList,
+    Sidebar,
+    AppMain,
+    TagsView
   },
   computed: {
     ...mapGetters([

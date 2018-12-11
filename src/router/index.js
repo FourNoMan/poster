@@ -4,8 +4,16 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/views/layout/Layout'
-import layoutAli from '@/views/layout/layoutAli/index'
+let Layout = null
+import layoutChannel  from '@/views/layout/Layout'
+import layoutAdmin from '@/views/layout/layoutAli/index'
+
+if(true) {
+  Layout = layoutChannel
+}
+else {
+  Layout = layoutAdmin
+}
 
 /* Router Modules */
 import componentsRouter from './modules/components'
@@ -36,7 +44,7 @@ import appManage from './modules/appManage'
 export const constantRouterMap = [
   {
     path: '/ali',
-    component: layoutAli,
+    component: layoutAdmin,
     hidden: false
   },
   {

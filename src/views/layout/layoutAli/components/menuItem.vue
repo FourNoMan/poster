@@ -7,7 +7,7 @@
         <i v-if="menuItem.title.icon" class="block" :class="[menuItem.title.icon, menuItem.title.rotate ? 'rotate' : '']"></i>
         <span class="badge" v-if="menuItem.title.badge">{{ menuItem.title.badge }}</span>
       </div>
-      <div class="absolute" :class="menuItem.position" :style="{width:menuItem.title.userIcon? '100%' : null}">
+      <div class="absolute" style="z-index: 999" :class="menuItem.position" :style="{width:menuItem.title.userIcon? '100%' : null}">
         <div class="flex full-height">
           <template v-for="(selection, index) in menuItem.selections">
             <selection-group :selectionData="selection" :key="index"></selection-group>
