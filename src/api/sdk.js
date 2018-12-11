@@ -30,6 +30,10 @@ Api['admin_tenant_list']={"url":"/admin/tenant/list","method":"get"}
 Api['admin_tenant_get_by_id']={"url":"/admin/tenant/get_by_id","method":"get"}
 Api['admin_tenant_list_all']={"url":"/admin/tenant/list_all","method":"get"}
 Api['admin_tenant_get_one']={"url":"/admin/tenant/get_one","method":"get"}
+/*存储*/
+Api['admin_cloud_disk_config_list']={"url":"/admin/cloud_disk_config/list","method":"post",requestBody:true}
+Api['admin_cloud_disk_config_list_create']={"url":"/admin/cloud_disk_config/create","method":"post",requestBody:true}
+Api['admin_cloud_disk_config_remove_by_id']={"url":"/admin/cloud_disk_config/remove_by_id","method":"post",requestBody:true}
 
 Api['admin_tenant_third_app_create']={"url":"/admin/tenant_third_app/create","method":"post",requestBody:true}
 Api['admin_tenant_third_app_remove_by_id']={"url":"/admin/tenant_third_app/remove_by_id","method":"get"}

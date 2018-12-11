@@ -88,7 +88,7 @@ export const constantRouterMap = [
       }
     ]
   },
-  {
+/*  {
     path: '/poster',
     component: Layout,
     redirect: '/poster/index',
@@ -132,7 +132,7 @@ export const constantRouterMap = [
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
     ]
-  }
+  }*/
 ]
 
 export default new Router({

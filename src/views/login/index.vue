@@ -158,7 +158,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('loginByMobile', this.loginForm).then(() => {
+          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             console.log('登陆成功！！！！')
             this.loading = false
             if(this.accountInfo.remember) {

@@ -83,6 +83,7 @@ export default {
         pageSize: 10
       },
       storageConfigItemData: {
+        title:'',
         bizName: '',
         businessTitle: '',
         bucketName: '',
@@ -138,6 +139,7 @@ export default {
             label: '创建时间',
             width: null,
             fixed: '',
+
             sortable: false
           },
           appType: {
@@ -203,14 +205,14 @@ export default {
     }
   },
   methods: {
-    getStorageConfigList() {
+    getStorageConfigList(){
       let obj = {}
       let that = this
-      sdk.admin_app_pay_channel_config_list(obj)
+      sdk.admin_cloud_disk_config_list(obj)
         .then(res => {
-          that.total = res.data.data.total
-          that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))
-          console.log(res, '++getStorageConfigList++')
+         /* that.total = res.data.data.total
+          that.tableData.tableItems = JSON.parse(JSON.stringify(res.data.data.dataList))*/
+         // console.log(res, '++getStorageConfigList++')
         })
         .catch(error => {
           console.log(error)
@@ -229,15 +231,17 @@ export default {
       }
       this.dialogVisible = true
     },
-    storageConfigCreate() {
+    storageConfigCreate(){
       let that = this
       console.log(this.storageConfigItemData, '++storageConfigItemData++')
-      sdk.admin_tenant_third_app_create(this.storageConfigItemData)
+      sdk.admin_cloud_disk_config_list_create(this.storageConfigItemData)
         .then(res => {
-          console.log(res, '++storageConfigCreate++')
+          console.log(res);
+          console.log('***********')
+          /*  console.log(res, '++storageConfigCreate++')
           that.dialogVisible = false
-          that.getStorageConfigList()
-          that.isStorageConfigUpdate = false
+           that.getStorageConfigList()
+           that.isStorageConfigUpdate = false*/
           that.$message({
             message: '创建成功！',
             type: 'success'
@@ -270,7 +274,7 @@ export default {
     storageConfigRemove(row) {
       let that = this
       if((row !== undefined) && (row !== null) && row.id) {
-        sdk.admin_tenant_third_app_remove_by_id({ id: row.id })
+        sdk.admin_cloud_disk_config_remove_by_id({ id: row.id })
           .then(res => {
             that.removeDialogVisible = false
             that.getStorageConfigList()
@@ -285,12 +289,12 @@ export default {
       }
     },
     dialogSubmit() {
-      if (this.storageConfigUpdate()) {
+    /*  if (this.storageConfigUpdate()) {
         this.storageConfigUpdate()
       }
-      else {
+      else {*/
         this.storageConfigCreate()
-      }
+     // }
     },
     handleSizeChange() {
       console.log('handleSizeChange')
@@ -299,12 +303,12 @@ export default {
       console.log('handleCurrentChange')
     }
   },
+  mounted() {
+    this.getStorageConfigList()
+  },
   components: {
     tableComp,
     dialogContent
-  },
-  mounted() {
-    this.getStorageConfigList()
   }
 }
 </script>
