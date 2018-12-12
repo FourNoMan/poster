@@ -97,6 +97,9 @@
 .margin-bottom-25{
   margin-bottom: 25px;
 }
+.margin-bottom-40{
+  margin-bottom: 40px;
+}
 .margin-bottom-50{
   margin-bottom: 50px;
 }
@@ -234,4 +237,11 @@
 
 .color-red{
   color: red;
+}
+
+//  超出一行省略号显示
+.text-ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
