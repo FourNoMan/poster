@@ -22,8 +22,8 @@
       <!--<div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>-->
       <!--<sidebar class="sidebar-container"/>-->
       <div class="main-container flex-1 flex flex-column main-bgcolor main-padding">
-        <!--<tags-view/>-->
-        <navbar :menu="true" class="shrink-none" style="background-color: #FFFFFF;"/>
+     <!--<tags-view/>-->
+        <navbar class="shrink-none" style="background-color: #FFFFFF;" :menu="menuValue"/>
         <app-main class="flex-1 overflow-auto"/>
       </div>
     </div>
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       activeIndex: '1-1',
+      menuValue:false,
       menuData: [
         {
           title: {

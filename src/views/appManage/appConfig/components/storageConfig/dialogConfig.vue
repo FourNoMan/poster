@@ -26,6 +26,18 @@
     </div>
     <div class="margin-top-20 flex item-center">
       <span class="width-150">
+       title
+      </span>
+      <el-input
+        clearable
+        placeholder="默认的bizName"
+        @input="valueChange"
+        style="width: 500px;"
+        v-model="storageConfigData.title">
+      </el-input>
+    </div>
+    <div class="margin-top-20 flex item-center">
+      <span class="width-150">
         BucketName
       </span>
       <el-input

@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container" v-if="menutest"/>
 
     <breadcrumb class="breadcrumb-container"/>
 
@@ -59,6 +59,7 @@ import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
 
 export default {
+  props:['menu'],
   components: {
     Breadcrumb,
     Hamburger,
@@ -74,7 +75,10 @@ export default {
       'name',
       'avatar',
       'device'
-    ])
+    ]),
+    menutest() {
+      return this.menu
+    },
   },
   methods: {
     toggleSideBar() {
