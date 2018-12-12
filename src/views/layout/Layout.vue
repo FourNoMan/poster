@@ -37,7 +37,7 @@
       <sidebar class="sidebar-container"/>
       <div class="main-container flex-1 flex flex-column main-bgcolor main-padding">
         <tags-view/>
-        <navbar class="shrink-none" style="background-color: #FFFFFF;"/>
+        <navbar class="shrink-none" style="background-color: #FFFFFF;" :menu="menuValue"/>
         <app-main class="flex-1"/>
       </div>
     </div>
@@ -61,6 +61,11 @@ export default {
     TagsView,
     ErrorLog,
     Screenfull
+  },
+  data() {
+    return {
+      menuValue: true
+    }
   },
   mixins: [ResizeMixin],
   computed: {
